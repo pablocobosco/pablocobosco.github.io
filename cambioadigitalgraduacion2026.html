@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digitaliza tus Entradas de Graduación</title>
+    <!-- Tailwind CSS para un diseño moderno y rápido -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        /* Un pequeño toque de fondo elegante */
+        body {
+            background-color: #0f172a;
+            background-image: radial-gradient(circle at top right, rgba(234, 179, 8, 0.05), transparent 40%);
+        }
+    </style>
+</head>
+<body class="text-slate-200 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Contenedor Principal -->
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-grow flex flex-col justify-center items-center">
+        
+        <!-- Tarjeta Central de la Landing -->
+        <div class="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-2xl p-6 md:p-10 shadow-2xl text-center w-full max-w-2xl">
+            
+            <!-- Encabezado / Logo o Imagen -->
+            <div class="mb-6">
+                <span class="text-xs font-bold tracking-widest text-amber-500 uppercase bg-amber-500/10 px-3 py-1 rounded-full">
+                    Pases Digitales
+                </span>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white mt-4 tracking-tight">
+                    ¡Tu Graduación está cerca!
+                </h1>
+                <p class="text-slate-400 mt-2 text-sm md:text-base">
+                    Convierte tus entradas de papel en formato digital para tu smartphone.
+                </p>
+            </div>
+
+            <!-- Imagen del ticket / Decorativa -->
+            <div class="my-6 max-w-sm mx-auto overflow-hidden rounded-xl shadow-lg border border-slate-700">
+                <img 
+                    src="https://vq8fqu2otcncbvhtvoc3xshxm_3bn2afc3sqf27s2_s.canva-cdn.email/274d71a260311aea5f2673645d9c26c9.jpg" 
+                    alt="Pase de Graduación" 
+                    class="w-full h-auto object-cover"
+                />
+            </div>
+
+            <!-- Explicación del Proceso (Pasos) -->
+            <div class="text-left bg-slate-950/50 rounded-xl p-5 border border-slate-800/60 my-6 space-y-4">
+                <h2 class="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-2 text-center">
+                    ¿Cómo funciona el cambio?
+                </h2>
+                
+                <div class="flex items-start gap-3">
+                    <div class="bg-amber-500 text-slate-950 font-bold rounded-full w-6 h-6 flex items-center justify-center shrink-0 text-sm mt-0.5">1</div>
+                    <p class="text-sm text-slate-300">Ten a mano tus <strong>entradas físicas en papel</strong> actuales.</p>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="bg-amber-500 text-slate-950 font-bold rounded-full w-6 h-6 flex items-center justify-center shrink-0 text-sm mt-0.5">2</div>
+                    <p class="text-sm text-slate-300">Haz clic en el botón de abajo y <strong>rellena el formulario</strong> con tus datos y códigos.</p>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="bg-amber-500 text-slate-950 font-bold rounded-full w-6 h-6 flex items-center justify-center shrink-0 text-sm mt-0.5">3</div>
+                    <p class="text-sm text-slate-300">¡Listo! Recibirás automáticamente tus <strong>versiones digitales tipo Wallet</strong> directamente en tu móvil.</p>
+                </div>
+            </div>
+
+            <!-- Botón de Acción Principal -->
+            <div class="mt-8">
+                <!-- REEMPLAZA EL '#' POR EL ENLACE REAL DE TU FORMULARIO -->
+                <a href="#" target="_blank" class="inline-block w-full sm:w-auto bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-lg px-8 py-4 rounded-xl shadow-lg shadow-amber-500/20 transition-all duration-300 transform hover:-translate-y-0.5 tracking-wide">
+                    Digitalizar Mis Entradas Aquí
+                </a>
+                <p class="text-xs text-slate-500 mt-3">
+                    * El proceso es inmediato una vez enviado el formulario.
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Pie de página sencillo -->
+    <footer class="w-full text-center py-6 border-t border-slate-900 text-xs text-slate-500">
+        <p>&copy; 2026 Gestión de Entradas Pablo Cobos. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
