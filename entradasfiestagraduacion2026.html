@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-slate-50">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -12,75 +12,187 @@
     <meta property="og:url" content="pablocobosco.github.io/entradasfiestagraduacion26.html">
     <meta property="og:type" content="website">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            max-width: 600px;
+            width: 90%;
+            margin: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        h2 {
+            color: #4a148c;
+            margin-top: 0;
+            font-size: 26px;
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .alerta {
+            background-color: #fff8e1;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #d32f2f;
+            font-weight: bold;
+        }
+
+        .info {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #444;
+        }
+
+        .info p {
+            margin-bottom: 18px;
+        }
+
+        .info strong {
+            color: #4a148c;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin: 35px 0 15px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 16px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            width: 80%;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        /* Botón del Formulario Deshabilitado (Grisáceo) */
+        .btn-disabled {
+            background-color: #9e9e9e;
+            color: #e0e0e0;
+            cursor: not-allowed;
+            box-shadow: none;
+            pointer-events: none; /* Evita que se pueda hacer clic */
+        }
+
+        /* Botón de Dudas (Verde WhatsApp) */
+        .btn-whatsapp {
+            background-color: #25d366;
+            box-shadow: 0 4px 8px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #128c7e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-whatsapp:active {
+            transform: translateY(1px);
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            padding: 20px 30px;
+            background-color: #fafafa;
+            border-top: 1px solid #eee;
+        }
+    </style>
 </head>
 
-<body class="min-h-full flex flex-col justify-between bg-gradient-to-tr from-slate-100 via-purple-50 to-indigo-50 antialiased selection:bg-purple-200">
+<body>
 
-    <main class="flex-grow flex items-center justify-center p-4 sm:p-6 md:p-8">
-        <div class="max-w-xl w-full bg-white/80 backdrop-blur-md rounded-2xl shadow-xl shadow-indigo-100/40 border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-100/50">
-            
-            <div class="overflow-hidden bg-purple-900 aspect-[3/1]">
-                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEheggszACerYf8DXgtq21nHTTWeBoF9sffBcAPqOb8Pfjc04hI2nJG9KAyjv4w2EVi-xZH7aDnUdXkSUiF2dz6bpr5ixBwcYrtINtU4DGtDdakSKcRNpMfBzrBxHJm5k_I0Zu1oec3baYRCxaaFFJ3z5WNl7PAhSalg9pgDtxaRtobqBASoCypnAVoNYXLW/w498-h165/IMG_0028.PNG" 
-                     alt="Graduación IES Maestro Domingo Cáceres" 
-                     class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500 opacity-95">
+    <div class="container">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEheggszACerYf8DXgtq21nHTTWeBoF9sffBcAPqOb8Pfjc04hI2nJG9KAyjv4w2EVi-xZH7aDnUdXkSUiF2dz6bpr5ixBwcYrtINtU4DGtDdakSKcRNpMfBzrBxHJm5k_I0Zu1oec3baYRCxaaFFJ3z5WNl7PAhSalg9pgDtxaRtobqBASoCypnAVoNYXLW/w498-h165/IMG_0028.PNG" alt="Graduación IES Maestro Domingo Cáceres" class="header-image">
+
+        <div class="content">
+            <h2>Solicitar Entradas Fiesta Graduación</h2>
+
+            <div class="info">
+                <p>Al enviar el formulario recibirás un correo de confirmación. Una vez que verifiquemos que has pagado la entrada a tu delegado/responsable, <strong>te llegará la entrada definitiva a tu correo</strong>.</p>
+
+                <p><strong>¿Traes acompañante?</strong> Si quieres traer un acompañante, este debe rellenar el formulario con sus propios datos.</p>
+
+                <p><strong>Control de Acceso:</strong> Deberás enseñar esta entrada para subirte al bus (si es tu caso) y para entrar al local. Puede que se te pida en cualquier momento. El acceso sin entrada conllevará las consecuencias correspondientes.</p>
             </div>
 
-            <div class="p-6 sm:p-8 md:p-10">
+            <div class="alerta">
+                ⚠️ ¡ATENCIÓN! Revisa tus datos antes de enviar, no podrás cambiarlos después.
+            </div>
+
+            <div class="btn-container">
+                <span class="btn btn-disabled">Solicitud no disponible aún</span>
                 
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-indigo-700 text-center tracking-tight mb-8">
-                    Solicitar Entradas Fiesta Graduación
-                </h1>
-
-                <div class="space-y-6 text-slate-600 leading-relaxed text-sm sm:text-base">
-                    
-                    <div class="flex items-start gap-3">
-                        <div class="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">✓</div>
-                        <p>Al enviar el formulario recibirás un correo de confirmación. Una vez que verifiquemos que has pagado la entrada a tu delegado/responsable, <strong class="font-semibold text-purple-900">te llegará la entrada definitiva a tu correo</strong>.</p>
-                    </div>
-
-                    <div class="flex items-start gap-3">
-                        <div class="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">✓</div>
-                        <p><strong class="font-semibold text-purple-900">¿Traes acompañante?</strong> Si quieres traer un acompañante, este debe rellenar el formulario con sus propios datos.</p>
-                    </div>
-
-                    <div class="flex items-start gap-3">
-                        <div class="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">✓</div>
-                        <p><strong class="font-semibold text-purple-900">Control de Acceso:</strong> Deberás enseñar esta entrada para subirte al bus (si es tu caso) y para entrar al local. Puede que se te pida en cualquier momento. El acceso sin entrada conllevará las consecuencias correspondientes.</p>
-                    </div>
-
-                </div>
-
-                <div class="mt-8 p-4 bg-amber-50/80 border-l-4 border-amber-500 rounded-r-xl flex items-start gap-3">
-                    <span class="text-amber-600 text-lg select-none">⚠️</span>
-                    <p class="text-sm font-medium text-amber-800">
-                        <span class="font-bold">¡ATENCIÓN!</span> Revisa tus datos antes de enviar, no podrás cambiarlos después.
-                    </p>
-                </div>
-
-                <div class="mt-8 flex flex-col items-center gap-4">
-                    
-                    <button disabled class="w-full sm:w-5/6 py-3.5 px-6 bg-slate-200 text-slate-400 font-semibold rounded-xl cursor-not-allowed text-center transition-colors duration-200 text-sm sm:text-base">
-                        Solicitud no disponible aún
-                    </button>
-                    
-                    <a href="https://wa.me/34672450944" 
-                       target="_blank" 
-                       class="w-full sm:w-5/6 py-3.5 px-6 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl text-center shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2 text-sm sm:text-base">
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397 0 11.973 0c3.184.001 6.177 1.24 8.43 3.496 2.253 2.256 3.491 5.252 3.491 8.44 0 6.575-5.336 11.92-11.914 11.92-2.007-.001-3.98-.507-5.73-1.474L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.742.002-2.602-1.01-5.05-2.85-6.893-1.84-1.842-4.29-2.856-6.886-2.858-5.446 0-9.872 4.37-9.877 9.744a9.617 9.617 0 0 0 1.478 4.953l-.993 3.63 3.733-.967z"/>
-                        </svg>
-                        ¿Dudas? Contactar por WhatsApp
-                    </a>
-
-                </div>
+                <a href="https://wa.me/34672450944" target="_blank" class="btn btn-whatsapp">¿Dudas? Contactar por WhatsApp</a>
             </div>
         </div>
-    </main>
 
-    <footer class="w-full py-6 text-center text-xs font-medium text-slate-400 bg-white/40 border-t border-slate-200/60 backdrop-blur-sm tracking-wide">
-        © 2026 Sistema de Gestión De Entradas Pablo Cobos
-    </footer>
+        <div class="footer">
+            © 2026 Sistema de Gestión De Entradas Pablo Cobos
+        </div>
+    </div>
+
+    <div id="boton-oculto" onclick="accederPanel()" title="." 
+         style="position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; cursor: default; opacity: 0; z-index: 9999;">
+    </div>
+
+    <script>
+    function accederPanel() {
+        let password = prompt("Acceso al panel de gestión. Introduce la contraseña:");
+        
+        if (password !== null) {
+            // Convierte lo que escribe el usuario a Base64 y lo compara
+            // 'UGFibG8yMDI2' es 'Pablo2026' en Base64
+            if (btoa(password) === "UGFibG8yMDI2") { 
+                
+                // La URL está codificada para que no se lea a simple vista
+                let urlOculta = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9hL21hY3Jvcy9lZHVjYXJleC5lcy9zL0FLZnljYncxS3JXd01zS0lmNmJTd2VZZzBlZ3g5aXdUbjA5Ri1VcXBjMmFGdEpHUGJvTTA4TWpHbFY3NWJNQVEtcHdMLW1QeC1BL2V4ZWM=";
+                
+                // Descodifica la URL y redirige
+                window.location.href = atob(urlOculta); 
+            } else {
+                alert("Contraseña incorrecta.");
+            }
+        }
+    }
+    </script>
 
 </body>
+
 </html>
