@@ -98,15 +98,31 @@
             width: 80%;
             box-sizing: border-box;
             margin-bottom: 15px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
         }
 
-        /* Botón del Formulario Deshabilitado (Grisáceo) */
-        .btn-disabled {
+        /* Nuevo Botón para Abrir Formulario */
+        .btn-form {
+            background-color: #4a148c;
+            box-shadow: 0 4px 8px rgba(74, 20, 140, 0.3);
+        }
+
+        .btn-form:hover {
+            background-color: #7c43bd;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(74, 20, 140, 0.4);
+        }
+
+        /* Estado Desactivado / Carga */
+        .btn-loading {
             background-color: #9e9e9e;
             color: #e0e0e0;
             cursor: not-allowed;
             box-shadow: none;
-            pointer-events: none; /* Evita que se pueda hacer clic */
+            pointer-events: none;
+            transform: none !important;
         }
 
         /* Botón de Dudas (Verde WhatsApp) */
@@ -157,7 +173,8 @@
             </div>
 
             <div class="btn-container">
-                <span class="btn btn-disabled">Solicitud no disponible aún</span>
+                <!-- Botón modificado con ID y evento click para controlar la redirección -->
+                <button id="btn-formulario" onclick="redirigirFormulario()" class="btn btn-form">Abrir formulario</button>
                 
                 <a href="https://wa.me/34672450944" target="_blank" class="btn btn-whatsapp">¿Dudas? Contactar por WhatsApp</a>
             </div>
@@ -173,18 +190,25 @@
     </div>
 
     <script>
+    function redirigirFormulario() {
+        let boton = document.getElementById('btn-formulario');
+        
+        // Cambiamos el texto y aplicamos la clase de carga (desactivado)
+        boton.innerText = "Estamos comprobando tu navegador...";
+        boton.className = "btn btn-loading";
+        
+        // Espera 2 segundos (2000 milisegundos) y redirige al enlace
+        setTimeout(function() {
+            window.location.href = "https://forms.gle/dSGLqYUmw7RTeQn99";
+        }, 2000);
+    }
+
     function accederPanel() {
         let password = prompt("Acceso al panel de gestión. Introduce la contraseña:");
         
         if (password !== null) {
-            // Convierte lo que escribe el usuario a Base64 y lo compara
-            // 'UGFibG8yMDI2' es 'Pablo2026' en Base64
             if (btoa(password) === "UGFibG8yMDI2") { 
-                
-                // La URL está codificada para que no se lea a simple vista
                 let urlOculta = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9hL21hY3Jvcy9lZHVjYXJleC5lcy9zL0FLZnljYncxS3JXd01zS0lmNmJTd2VZZzBlZ3g5aXdUbjA5Ri1VcXBjMmFGdEpHUGJvTTA4TWpHbFY3NWJNQVEtcHdMLW1QeC1BL2V4ZWM=";
-                
-                // Descodifica la URL y redirige
                 window.location.href = atob(urlOculta); 
             } else {
                 alert("Contraseña incorrecta.");
