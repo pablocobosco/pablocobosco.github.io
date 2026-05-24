@@ -192,60 +192,6 @@
             z-index: 10;
             text-align: center;
         }
-
-        /* --- ESTILOS DEL CONTADOR --- */
-        .countdown-wrapper {
-            text-align: center;
-            margin-bottom: 25px;
-            border-bottom: 2px dashed #eee;
-            padding-bottom: 25px;
-        }
-
-        .countdown-title {
-            color: #7c43bd;
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            margin-top: 0;
-        }
-
-        .countdown-container {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .countdown-box {
-            background: linear-gradient(135deg, #4a148c 0%, #7c43bd 100%);
-            color: white;
-            padding: 12px 10px;
-            border-radius: 10px;
-            min-width: 65px;
-            box-shadow: 0 6px 15px rgba(74, 20, 140, 0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .countdown-box span {
-            font-size: 28px;
-            font-weight: 800;
-            line-height: 1;
-            margin-bottom: 5px;
-        }
-
-        .countdown-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.9;
-        }
-
-        .countdown-finished {
-            color: #25d366;
-            font-size: 24px;
-            font-weight: bold;
-        }
     </style>
 </head>
 
@@ -283,20 +229,8 @@
         <img src="https://pablocobosco.github.io/pkpassstripAG.png" alt="Pásalo a Digital" class="strip-image">
         
         <div class="content">
-            
-            <div class="countdown-wrapper" id="seccion-contador">
-                <h3 class="countdown-title">⏳ Disponible en:</h3>
-                <div class="countdown-container" id="reloj-contador">
-                    <div class="countdown-box"><span id="cd-dias">00</span><div class="countdown-label">Días</div></div>
-                    <div class="countdown-box"><span id="cd-horas">00</span><div class="countdown-label">Horas</div></div>
-                    <div class="countdown-box"><span id="cd-min">00</span><div class="countdown-label">Min</div></div>
-                    <div class="countdown-box"><span id="cd-seg">00</span><div class="countdown-label">Seg</div></div>
-                </div>
-            </div>
-            
             <div class="info" style="text-align: center;">
-                <p>Habilitaré un espacio para que puedas <strong>pasar tus entradas del acto de graduación (no de la fiesta) en papel a formato digital</strong> de forma sencilla.</p>
-                <p style="margin-bottom: 0;">¡Mantente atento a la cuenta atrás!</p>
+                <p style="margin-bottom: 0;">Habilitaré un espacio para que puedas <strong>pasar tus entradas del acto de graduación (no de la fiesta) en papel a formato digital</strong> de forma sencilla.</p>
             </div>
         </div>
     </div>
@@ -331,34 +265,6 @@
             }
         }
     }
-
-    // --- LÓGICA DEL CONTADOR (22/05/2026 23:59:00) ---
-    // Usamos el formato ISO para asegurar compatibilidad en todos los navegadores
-    const fechaObjetivo = new Date("2026-05-22T23:59:00").getTime();
-
-    const intervaloContador = setInterval(function() {
-        const ahora = new Date().getTime();
-        const distancia = fechaObjetivo - ahora;
-
-        // Si la fecha ya ha pasado
-        if (distancia < 0) {
-            clearInterval(intervaloContador);
-            document.getElementById("reloj-contador").innerHTML = "<div class='countdown-finished'>¡Ya está disponible! 🎉</div>";
-            return;
-        }
-
-        // Cálculos de tiempo
-        const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
-        const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
-        const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
-
-        // Imprimir resultados con ceros a la izquierda si es necesario (ej: 09 en vez de 9)
-        document.getElementById("cd-dias").innerText = dias.toString().padStart(2, '0');
-        document.getElementById("cd-horas").innerText = horas.toString().padStart(2, '0');
-        document.getElementById("cd-min").innerText = minutos.toString().padStart(2, '0');
-        document.getElementById("cd-seg").innerText = segundos.toString().padStart(2, '0');
-    }, 1000);
     </script>
 
 </body>
