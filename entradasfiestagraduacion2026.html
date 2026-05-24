@@ -133,7 +133,6 @@
             cursor: pointer;
             font-family: inherit;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            /* Cambios para contener el efecto de progreso */
             position: relative;
             overflow: hidden;
             z-index: 1;
@@ -154,7 +153,7 @@
 
         /* --- ESTILOS DE CARGA CON ANIMACIÓN --- */
         .btn-loading {
-            background-color: #bdc3c7; /* Fondo gris base */
+            background-color: #bdc3c7; 
             color: #ffffff;
             cursor: not-allowed;
             box-shadow: none;
@@ -169,15 +168,13 @@
             left: 0;
             height: 100%;
             z-index: -1;
-            animation: fillProgress 2s linear forwards; /* 2 segundos */
+            animation: fillProgress 2s linear forwards; 
         }
         
-        /* Relleno morado para el botón de la fiesta */
         .btn-loading-purple::before {
             background: linear-gradient(135deg, #4a148c 0%, #7c43bd 100%); 
         }
         
-        /* Relleno azul para el botón del acto */
         .btn-loading-blue::before {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
         }
@@ -187,8 +184,35 @@
             100% { width: 100%; }
         }
 
-        .btn-whatsapp {
-            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); 
+        /* --- BOTÓN FLOTANTE WHATSAPP --- */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: white;
+            text-decoration: none;
+            padding: 14px 22px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .floating-whatsapp:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-icon {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
         }
 
         .footer {
@@ -264,12 +288,10 @@
 
             <div class="btn-container">
                 <button id="btn-formulario" onclick="redirigirFormulario()" class="btn btn-form">Abrir formulario</button>
-                <a href="https://wa.me/34672450944" target="_blank" class="btn btn-whatsapp">¿Dudas? Contactar por WhatsApp</a>
             </div>
         </div>
     </div>
 
-    <!-- SECCIÓN DEL ACTO OFICIAL (DUPLICADO DIGITAL) -->
     <div class="container">
         <div class="tag-nuevo">¡Novedad!</div>
         <div class="ribbon" style="background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);">Solo Acto</div>
@@ -283,13 +305,16 @@
             <div class="info" style="text-align: center;">
                 <p>Si prefieres llevar tus entradas cómodamente en el teléfono en lugar de impresas en papel, aquí puedes generar tu <strong>duplicado digital</strong> para el Acto Oficial.</p>
                 
-                <p style="color: #c62828; font-weight: bold; font-size: 14px; background-color: #ffebee; padding: 12px; border-radius: 8px; border-left: 4px solid #d32f2f; margin-top: 20px;">
+                <p style="color: #0d47a1; font-weight: bold; font-size: 14px; background-color: #e3f2fd; padding: 12px; border-radius: 8px; border-left: 4px solid #1976d2; margin-top: 20px;">
+                    🔒 ACCESO RESTRINGIDO: Por seguridad, para rellenar este formulario es obligatorio acceder con tu cuenta de correo <strong>@educarex.es,</strong> aunque luego las entradas se envien a un correo externo.
+                </p>
+
+                <p style="color: #c62828; font-weight: bold; font-size: 14px; background-color: #ffebee; padding: 12px; border-radius: 8px; border-left: 4px solid #d32f2f; margin-top: 15px;">
                     ⚠️ IMPORTANTE: Este espacio es EXCLUSIVAMENTE para el Acto de Graduación. No tiene ninguna validez para la fiesta posterior.
                 </p>
             </div>
 
             <div class="btn-container" style="margin-top: 25px; margin-bottom: 5px;">
-                <!-- Cambiado de <a> a <button> para manejar la animación igual que el otro -->
                 <button id="btn-acto" onclick="redirigirActo()" class="btn btn-acto">Digitalizar Entrada (Solo Acto)</button>
             </div>
         </div>
@@ -299,8 +324,17 @@
         © 2026 Sistema de Gestión De Entradas Pablo Cobos
     </div>
 
+    <!-- BOTÓN FLOTANTE WHATSAPP -->
+    <a href="https://wa.me/34672450944" target="_blank" class="floating-whatsapp">
+        <svg viewBox="0 0 24 24" class="whatsapp-icon">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        ¿Dudas?
+    </a>
+
+    <!-- Botón oculto movido a la izquierda para no estorbar -->
     <div id="boton-oculto" onclick="accederPanel()" title="." 
-         style="position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; cursor: default; opacity: 0; z-index: 9999;">
+         style="position: fixed; bottom: 0; left: 0; width: 40px; height: 40px; cursor: default; opacity: 0; z-index: 9999;">
     </div>
 
     <script>
@@ -311,7 +345,7 @@
         boton.innerText = "Estamos comprobando tu navegador...";
         
         boton.classList.remove("btn-form");
-        boton.classList.add("btn-loading", "btn-loading-purple"); // Añade la animación morada
+        boton.classList.add("btn-loading", "btn-loading-purple"); 
         
         setTimeout(function() {
             window.location.href = "https://forms.gle/dSGLqYUmw7RTeQn99";
@@ -323,10 +357,10 @@
         boton.innerText = "Estamos comprobando tu navegador...";
         
         boton.classList.remove("btn-acto");
-        boton.classList.add("btn-loading", "btn-loading-blue"); // Añade la animación azul
+        boton.classList.add("btn-loading", "btn-loading-blue"); 
         
         setTimeout(function() {
-            window.location.href = "TU_URL_AQUI"; // RECUERDA CAMBIAR ESTA URL
+            window.location.href = "https://script.google.com/a/macros/educarex.es/s/AKfycbwTsmKekq65gIIBVvvf5AY03OMetPrdn_fx0CNrWiz9i7NLp_agnWldkiB8V5zKCvNBPw/exec"; 
         }, 2000);
     }
 
@@ -344,5 +378,6 @@
     </script>
 
 </body>
+</html>
 
 </html>
