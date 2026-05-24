@@ -66,6 +66,19 @@
             margin-bottom: 28px;
         }
 
+        /* --- TÍTULO GRANDE PARA SECCIÓN DIGITAL --- */
+        .title-digital {
+            color: #1e3c72;
+            font-size: 34px;
+            font-weight: 800;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
         .alerta {
             background-color: #fff8e1;
             color: #c62828;
@@ -120,6 +133,10 @@
             cursor: pointer;
             font-family: inherit;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            /* Cambios para contener el efecto de progreso */
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
         .btn:hover {
@@ -130,14 +147,44 @@
         .btn-form {
             background: linear-gradient(135deg, #4a148c 0%, #7c43bd 100%); 
         }
+        
+        .btn-acto {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
+        }
 
+        /* --- ESTILOS DE CARGA CON ANIMACIÓN --- */
         .btn-loading {
-            background-color: #bdc3c7; 
-            color: #ecf0f1;
+            background-color: #bdc3c7; /* Fondo gris base */
+            color: #ffffff;
             cursor: not-allowed;
             box-shadow: none;
             pointer-events: none;
             transform: none !important;
+        }
+
+        .btn-loading::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: -1;
+            animation: fillProgress 2s linear forwards; /* 2 segundos */
+        }
+        
+        /* Relleno morado para el botón de la fiesta */
+        .btn-loading-purple::before {
+            background: linear-gradient(135deg, #4a148c 0%, #7c43bd 100%); 
+        }
+        
+        /* Relleno azul para el botón del acto */
+        .btn-loading-blue::before {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
+        }
+
+        @keyframes fillProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
         }
 
         .btn-whatsapp {
@@ -222,15 +269,28 @@
         </div>
     </div>
 
+    <!-- SECCIÓN DEL ACTO OFICIAL (DUPLICADO DIGITAL) -->
     <div class="container">
-        <div class="tag-nuevo">¡Nuevo!</div>
-        <div class="ribbon">Próximamente</div>
+        <div class="tag-nuevo">¡Novedad!</div>
+        <div class="ribbon" style="background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);">Solo Acto</div>
 
         <img src="https://pablocobosco.github.io/pkpassstripAG.png" alt="Pásalo a Digital" class="strip-image">
         
         <div class="content">
+            
+            <h2 class="title-digital">¡Pasa tus entradas a digital!</h2>
+            
             <div class="info" style="text-align: center;">
-                <p style="margin-bottom: 0;">Habilitaré un espacio para que puedas <strong>pasar tus entradas del acto de graduación (no de la fiesta) en papel a formato digital</strong> de forma sencilla.</p>
+                <p>Si prefieres llevar tus entradas cómodamente en el teléfono en lugar de impresas en papel, aquí puedes generar tu <strong>duplicado digital</strong> para el Acto Oficial.</p>
+                
+                <p style="color: #c62828; font-weight: bold; font-size: 14px; background-color: #ffebee; padding: 12px; border-radius: 8px; border-left: 4px solid #d32f2f; margin-top: 20px;">
+                    ⚠️ IMPORTANTE: Este espacio es EXCLUSIVAMENTE para el Acto de Graduación. No tiene ninguna validez para la fiesta posterior.
+                </p>
+            </div>
+
+            <div class="btn-container" style="margin-top: 25px; margin-bottom: 5px;">
+                <!-- Cambiado de <a> a <button> para manejar la animación igual que el otro -->
+                <button id="btn-acto" onclick="redirigirActo()" class="btn btn-acto">Digitalizar Entrada (Solo Acto)</button>
             </div>
         </div>
     </div>
@@ -245,12 +305,28 @@
 
     <script>
     // --- LÓGICA REDIRECCIÓN Y PANEL ---
+    
     function redirigirFormulario() {
         let boton = document.getElementById('btn-formulario');
         boton.innerText = "Estamos comprobando tu navegador...";
-        boton.className = "btn btn-loading";
+        
+        boton.classList.remove("btn-form");
+        boton.classList.add("btn-loading", "btn-loading-purple"); // Añade la animación morada
+        
         setTimeout(function() {
             window.location.href = "https://forms.gle/dSGLqYUmw7RTeQn99";
+        }, 2000);
+    }
+
+    function redirigirActo() {
+        let boton = document.getElementById('btn-acto');
+        boton.innerText = "Estamos comprobando tu navegador...";
+        
+        boton.classList.remove("btn-acto");
+        boton.classList.add("btn-loading", "btn-loading-blue"); // Añade la animación azul
+        
+        setTimeout(function() {
+            window.location.href = "TU_URL_AQUI"; // RECUERDA CAMBIAR ESTA URL
         }, 2000);
     }
 
