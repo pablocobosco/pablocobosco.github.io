@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicio de Identificación - UEx</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .uex-text { color: #008f7a; }
+        .bg-uex { background-color: #008f7a; }
+        .border-uex { border-color: #008f7a; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #008f7a; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gray-50 flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div id="login-container" class="w-full max-w-md">
+        <div class="mb-8 flex justify-center">
+            <img src="https://sso.unex.es:443/login_oam/oam/img/logouex.png" alt="Logo UEx" class="w-64">
+        </div>
+        <div class="bg-white border-t-[5px] border-uex shadow-md p-8 rounded-lg">
+            <h2 class="text-xl text-gray-600 mb-6 border-b border-gray-300 pb-2">Página de Autenticación de la UEx</h2>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-semibold mb-1">IDUEX:</label>
+                <input type="text" id="iduex" class="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#008f7a]">
+            </div>
+            <div class="mb-6">
+                <div class="flex justify-between mb-1">
+                    <label class="text-gray-700 font-semibold">PINWEB:</label>
+                    <a href="#" class="text-sm uex-text hover:underline">¿No recuerdas la contraseña?</a>
+                </div>
+                <input type="password" id="pinweb" class="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-1 focus:ring-[#008f7a]">
+            </div>
+            <div class="flex justify-end">
+                <button onclick="iniciarSecuencia()" class="bg-uex text-white px-8 py-2 font-semibold hover:bg-teal-800 transition rounded-md">INICIAR SESIÓN</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading-container" class="hidden flex flex-col items-center text-center">
+        <div class="spinner mb-4"></div>
+        <p id="loading-text" class="text-gray-600 font-semibold text-lg px-4">Procesando petición...</p>
+        <p class="text-red-600 font-bold text-xs mt-4 animate-pulse">POR FAVOR, NO RECARGUE LA PÁGINA</p>
+    </div>
+
+    <div id="results-container" class="hidden w-full max-w-2xl bg-white shadow-md p-8 border-t-[5px] border-uex rounded-lg">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Calificaciones PAU JUN – Conv. Ordinaria</h2>
+        <p class="text-sm text-gray-500 mb-6">Las calificaciones iniciales de la PAU se publicaron el 12 de junio.</p>
+        
+        <div class="bg-gray-50 p-4 border-l-4 border-uex rounded-r-lg text-xs text-gray-600 mb-6 space-y-3">
+            <p><strong class="text-uex">Tarjeta de Calificaciones:</strong> Cada estudiante deberá descargar y guardar, desde el enlace habilitado en la página de consulta, el documento en formato PDF con la Tarjeta de Calificaciones en los plazos indicados a continuación, ya que con posterioridad a dichos plazos quedará inhabilitada la descarga del documento.</p>
+            <p><strong class="text-red-600">IMPORTANTE:</strong> usted deberá descargar en el plazo indicado y guardar la Tarjeta Definitiva firmada electrónicamente ya que será el documento que acredite sus resultados en las pruebas.</p>
+            <p><strong>Tarjeta provisional (no tiene validez oficial) de calificaciones:</strong> desde el 13 hasta el 17 de junio.</p>
+            <p><strong>TARJETA DEFINITIVA firmada electrónicamente:</strong> Estudiantes que no soliciten revisión de calificaciones: desde el 18 de junio a las 8:00 hasta al 31 de octubre. Estudiantes que hayan solicitado revisión de calificaciones: desde el 22 de junio a las 19:10 hasta el 31 de octubre.</p>
+            <p><strong>Plazo de solicitud de Revisión:</strong> desde el 15 de junio a las 0:00 horas hasta el 17 de junio a las 14:00 horas (en el botón de consulta de calificaciones).</p>
+        </div>
+
+        <div class="space-y-3 mb-6 text-sm">
+            <div class="flex justify-between border-b pb-1"><span>Lengua Castellana y Literatura</span> <span class="font-bold">4.56</span></div>
+            <div class="flex justify-between border-b pb-1"><span>Matemáticas aplicadas a las CCSS</span> <span class="font-bold">6.20</span></div>
+            <div class="flex justify-between border-b pb-1"><span>Inglés</span> <span class="font-bold">8.10</span></div>
+            <div class="flex justify-between border-b pb-1"><span>Historia de España</span> <span class="font-bold">6.90</span></div>
+            <div class="flex justify-between"><span>Empresa y Modelos de Negocio</span> <span class="font-bold">4.80</span></div>
+        </div>
+        <button onclick="activarBroma()" class="w-full bg-black text-white py-2 font-bold hover:bg-gray-800 transition rounded-md">Compartir Calificaciones</button>
+    </div>
+
+    <div id="broma-container" class="hidden fixed inset-0 bg-white z-50 flex-col items-center justify-center">
+        <img src="https://pablocobosco.github.io/migue.jpeg" class="w-64 mb-6 shadow-2xl rounded-lg">
+        <h1 class="text-5xl font-black text-red-600 tracking-tighter">¡MIGUEL!</h1>
+        <p class="text-2xl font-bold mt-2">TE LA HAS TRAGADO</p>
+    </div>
+
+    <script>
+        function iniciarSecuencia() {
+            const id = document.getElementById('iduex').value;
+            const pin = document.getElementById('pinweb').value;
+            if(!id || !pin) { alert("Introduce tus credenciales"); return; }
+            
+            document.getElementById('login-container').classList.add('hidden');
+            const loadContainer = document.getElementById('loading-container');
+            const loadText = document.getElementById('loading-text');
+            loadContainer.classList.remove('hidden');
+
+            setTimeout(() => loadText.innerText = "Accediendo al servidor...", 2000);
+            setTimeout(() => loadText.innerText = "Consultando Alumno: Miguel Fernández García", 3500);
+            setTimeout(() => loadText.innerText = "Estamos tardando más de lo normal por la alta demanda. Por favor, espere...", 8000);
+            
+            setTimeout(() => {
+                loadContainer.classList.add('hidden');
+                document.getElementById('results-container').classList.remove('hidden');
+            }, 15000);
+        }
+
+        function activarBroma() {
+            document.body.innerHTML = document.getElementById('broma-container').outerHTML;
+            document.getElementById('broma-container').style.display = "flex";
+        }
+    </script>
+</body>
+</html>
