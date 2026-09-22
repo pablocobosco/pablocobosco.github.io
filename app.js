@@ -10,6 +10,14 @@ const fallback = {
 const $ = (id) => document.getElementById(id);
 const weatherDescriptions = { 0: ["Cielo despejado", "☀"], 1: ["Principalmente despejado", "☀"], 2: ["Parcialmente nublado", "◒"], 3: ["Cubierto", "☁"], 45: ["Niebla", "≋"], 48: ["Niebla helada", "≋"], 51: ["Llovizna ligera", "⌁"], 53: ["Llovizna", "⌁"], 55: ["Llovizna intensa", "⌁"], 61: ["Lluvia ligera", "☂"], 63: ["Lluvia", "☂"], 65: ["Lluvia intensa", "☂"], 71: ["Nieve ligera", "❄"], 80: ["Chubascos", "☂"], 95: ["Tormenta", "ϟ"] };
 const shortDays = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+const calendarUrl = "https://p124-caldav.icloud.com/published/2/MjAzMzU2NjI4MzQyMDMzNSAK8sTVqXEK1jvzk1cNEZKfA-YZAffDBty1eYnb9Kg7ExY_d4umgmdwCRn17BEmME349yYakN5MTcGg2aqcToI";
+const classSchedule = {
+  1: [["15:30–17:20", "CED", "H0.13 · G1.32 · G1.35"], ["17:40–19:30", "FP", "H0.13"], ["19:40–21:30", "CED", "G1.32 · G1.35"]],
+  2: [["15:30–17:20", "IMD", "H0.13"], ["17:40–19:30", "ALN", "H0.13 · B1.31 · B1.33"]],
+  3: [["15:30–17:20", "AE", "H0.13"], ["17:40–19:30", "CED", "H0.13"]],
+  4: [["15:30–17:20", "IMD", "H0.13 · B1.33 · B1.34 · B1.35"], ["17:40–19:30", "FP", "H0.13 · I2.31 · I2.33 · I2.35"]],
+  5: [["15:30–17:20", "ALN", "H0.13"], ["17:40–19:30", "AE", "H0.13"]]
+};
 
 function description(code) { return weatherDescriptions[code] || ["Tiempo variable", "◒"]; }
 function formatTime(value) { return new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Europe/Madrid" }).format(new Date(value)); }
@@ -18,6 +26,60 @@ function windDirection(degrees) { return ["N", "NE", "E", "SE", "S", "SO", "O", 
 function greeting() {
   const hour = Number(new Intl.DateTimeFormat("es-ES", { hour: "numeric", hour12: false, timeZone: "Europe/Madrid" }).format(new Date()));
   return hour < 12 ? "Buenos días" : hour < 20 ? "Buenas tardes" : "Buenas noches";
+}
+function todayKey() {
+  const day = new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "Europe/Madrid" }).format(new Date());
+  return { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5 }[day] || 0;
+}
+function renderClasses() {
+  const today = todayKey();
+  const classes = classSchedule[today] || [];
+  $("schedule-day").textContent = classes.length ? "Hoy" : "Sin clases";
+  $("class-list").innerHTML = classes.length ? classes.map(([time, name, room]) => `<div class="class-item"><span class="class-dot" aria-hidden="true"></span><span class="class-time">${time}</span><span class="class-info"><span class="class-name">${name}</span><span class="class-room">${room}</span></span></div>`).join("") : '<p class="empty-state">No tienes clases programadas para hoy.</p>';
+}
+
+function unfoldICS(text) {
+  return text.replace(/\r?\n[ \t]/g, "");
+}
+function parseICSDate(value) {
+  const clean = value.split(":").pop().trim();
+  if (/^\d{8}$/.test(clean)) return new Date(`${clean.slice(0, 4)}-${clean.slice(4, 6)}-${clean.slice(6, 8)}T00:00:00`);
+  if (/^\d{8}T\d{6}Z$/.test(clean)) return new Date(`${clean.slice(0, 4)}-${clean.slice(4, 6)}-${clean.slice(6, 8)}T${clean.slice(9, 11)}:${clean.slice(11, 13)}:${clean.slice(13, 15)}Z`);
+  if (/^\d{8}T\d{6}$/.test(clean)) return new Date(`${clean.slice(0, 4)}-${clean.slice(4, 6)}-${clean.slice(6, 8)}T${clean.slice(9, 11)}:${clean.slice(11, 13)}:${clean.slice(13, 15)}`);
+  return new Date(clean);
+}
+function parseICS(text) {
+  const events = [];
+  const blocks = unfoldICS(text).split("BEGIN:VEVENT").slice(1);
+  blocks.forEach((block) => {
+    const get = (key) => (block.match(new RegExp(`\\n${key}(?:;[^:]*)?:(.*)`)) || [])[1]?.trim().replace(/\\n/g, " ").replace(/\\,/g, ",");
+    const start = get("DTSTART");
+    if (start) events.push({ title: get("SUMMARY") || "Evento", start: parseICSDate(start), end: parseICSDate(get("DTEND") || start) });
+  });
+  return events.filter((event) => !Number.isNaN(event.start.getTime())).sort((a, b) => a.start - b.start);
+}
+function isToday(date) {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Madrid" }).format(date) === new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Madrid" }).format(new Date());
+}
+function renderEvents(events) {
+  const now = new Date();
+  const todayEvents = events.filter((event) => isToday(event.start));
+  const next = events.find((event) => event.start >= now);
+  $("event-list").innerHTML = todayEvents.length ? todayEvents.map((event) => `<div class="event-item"><span class="event-time">${formatTime(event.start)}</span><span class="event-title">${event.title}</span></div>`).join("") : '<p class="empty-state">No hay eventos para hoy.</p>';
+  $("next-event").innerHTML = next ? `<span class="next-event-label">Próximo evento</span><span class="next-event-title">${next.title}</span><span class="next-event-time">${formatDate(next.start.toISOString().slice(0, 10), { weekday: "long", day: "numeric", month: "long" })} · ${formatTime(next.start)}</span>` : '<span class="next-event-title">No hay próximos eventos</span>';
+  $("calendar-status").textContent = "Calendario actualizado";
+}
+async function loadCalendar() {
+  try {
+    const response = await fetch(calendarUrl, { headers: { Accept: "text/calendar" } });
+    if (!response.ok) throw new Error(`Calendar request failed: ${response.status}`);
+    renderEvents(parseICS(await response.text()));
+  } catch (error) {
+    console.warn(error);
+    $("event-list").innerHTML = '<p class="empty-state">No se ha podido cargar el calendario.</p>';
+    $("next-event").innerHTML = '<span class="next-event-title">Abre el calendario para ver tus eventos</span>';
+    $("calendar-status").innerHTML = 'Feed no disponible · <a href="webcal://p124-caldav.icloud.com/published/2/MjAzMzU2NjI4MzQyMDMzNSAK8sTVqXEK1jvzk1cNEZKfA-YZAffDBty1eYnb9Kg7ExY_d4umgmdwCRn17BEmME349yYakN5MTcGg2aqcToI">Añadir a tu calendario</a>';
+  }
 }
 
 function render(data, isFallback = false) {
@@ -60,5 +122,7 @@ async function loadWeather() {
 function showToast(message) { const toast = $("toast"); toast.textContent = message; toast.classList.add("visible"); setTimeout(() => toast.classList.remove("visible"), 4500); }
 $("refresh-button").addEventListener("click", loadWeather);
 $("hourly-scroll-button").addEventListener("click", () => $("hourly-forecast").scrollBy({ left: 300, behavior: "smooth" }));
+renderClasses();
+loadCalendar();
 render(fallback, true);
 loadWeather();
