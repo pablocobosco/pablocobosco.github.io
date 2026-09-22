@@ -27,7 +27,7 @@
     <main>
       <section class="hero-grid" aria-labelledby="page-title">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> Tu bienvenida · Andalucía</p>
+          <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> Conectado al servidor</p>
           <h1 id="page-title"><span id="greeting">Buenos días</span>,<br><span>Pablo.</span></h1>
           <p class="hero-date" id="hero-date">Jueves, 22 de septiembre de 2026</p>
           <div class="temperature-lockup">
@@ -38,13 +38,12 @@
           <p class="condition" id="current-condition">Cielo despejado</p>
           <p class="feels-like">Sensación térmica <strong id="feels-like">29°</strong></p>
         </div>
-        <div class="sun-card" aria-label="Amanecer y puesta de sol">
-          <div class="sun-arc" aria-hidden="true"><span class="sun-orb"></span></div>
-          <div class="sun-times">
-            <div><span class="sun-icon">↑</span><span><small>Amanecer</small><strong id="sunrise">08:06</strong></span></div>
-            <div><span class="sun-icon sunset-icon">↓</span><span><small>Puesta de sol</small><strong id="sunset">20:19</strong></span></div>
+        <div class="schedule-card" aria-label="Clases de hoy">
+          <div class="section-heading compact-heading">
+            <div><p class="eyebrow">Tu horario</p><h2>Clases de hoy</h2></div>
+            <span class="date-pill" id="schedule-day">Hoy</span>
           </div>
-          <p class="golden-hour">La hora dorada llega en <strong id="golden-hour">8 h 12 min</strong></p>
+          <div class="class-list" id="class-list"></div>
         </div>
       </section>
 
@@ -64,25 +63,6 @@
         <article class="metric-card uv-card">
           <div class="metric-icon uv-icon" aria-hidden="true">✦</div>
           <div><p>Índice UV</p><strong id="uv-index">6 <em>Alto</em></strong><span>Usa protección solar</span></div>
-        </article>
-      </section>
-
-      <section class="start-dashboard" aria-label="Tu agenda de hoy">
-        <article class="schedule-panel">
-          <div class="section-heading compact-heading">
-            <div><p class="eyebrow">Tu horario</p><h2>Clases de hoy</h2></div>
-            <span class="date-pill" id="schedule-day">Hoy</span>
-          </div>
-          <div class="class-list" id="class-list"></div>
-        </article>
-        <article class="events-panel">
-          <div class="section-heading compact-heading">
-            <div><p class="eyebrow">Tu agenda</p><h2>Eventos</h2></div>
-            <a class="calendar-link" href="webcal://p124-caldav.icloud.com/published/2/MjAzMzU2NjI4MzQyMDMzNSAK8sTVqXEK1jvzk1cNEZKfA-YZAffDBty1eYnb9Kg7ExY_d4umgmdwCRn17BEmME349yYakN5MTcGg2aqcToI" aria-label="Abrir calendario en tu aplicación">↗</a>
-          </div>
-          <div class="next-event" id="next-event"></div>
-          <div class="event-list" id="event-list"></div>
-          <p class="calendar-status" id="calendar-status">Cargando calendario…</p>
         </article>
       </section>
 
