@@ -29,7 +29,10 @@ const weeklyMenu = {
 };
 
 function description(code) { return weatherDescriptions[code] || ["Tiempo variable", "◒"]; }
-function formatTime(value) { return new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Europe/Madrid" }).format(new Date(value)); }
+function formatTime(value) {
+  if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value)) return value.slice(11, 16);
+  return new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Europe/Madrid" }).format(new Date(value));
+}
 function formatDate(value, options) {
   const date = value instanceof Date ? value : new Date(/^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T12:00:00` : value);
   return new Intl.DateTimeFormat("es-ES", { timeZone: "Europe/Madrid", ...options }).format(date);
@@ -64,10 +67,16 @@ function renderMenu() {
 function renderForecasts(data) {
   const hourly = data.hourly || fallback.hourly;
   const daily = data.daily || fallback.daily;
-  const hourlyTimes = Array.isArray(hourly.time) ? hourly.time : fallback.hourly.time;
-  const hourlyTemperatures = Array.isArray(hourly.temperature_2m) ? hourly.temperature_2m : fallback.hourly.temperature_2m;
-  const hourlyRain = Array.isArray(hourly.precipitation_probability) ? hourly.precipitation_probability : fallback.hourly.precipitation_probability;
-  const hourlyCodes = Array.isArray(hourly.weather_code) ? hourly.weather_code : fallback.hourly.weather_code;
+  const allHourlyTimes = Array.isArray(hourly.time) ? hourly.time : fallback.hourly.time;
+  const allHourlyTemperatures = Array.isArray(hourly.temperature_2m) ? hourly.temperature_2m : fallback.hourly.temperature_2m;
+  const allHourlyRain = Array.isArray(hourly.precipitation_probability) ? hourly.precipitation_probability : fallback.hourly.precipitation_probability;
+  const allHourlyCodes = Array.isArray(hourly.weather_code) ? hourly.weather_code : fallback.hourly.weather_code;
+  const currentHour = data.current?.time ? data.current.time.slice(0, 13) : new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Madrid", hour: "2-digit", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()).replace(" ", "T");
+  const startIndex = Math.max(0, allHourlyTimes.findIndex((time) => time.slice(0, 13) >= currentHour));
+  const hourlyTimes = allHourlyTimes.slice(startIndex);
+  const hourlyTemperatures = allHourlyTemperatures.slice(startIndex);
+  const hourlyRain = allHourlyRain.slice(startIndex);
+  const hourlyCodes = allHourlyCodes.slice(startIndex);
   const dailyTimes = Array.isArray(daily.time) ? daily.time : fallback.daily.time;
   const dailyMax = Array.isArray(daily.temperature_2m_max) ? daily.temperature_2m_max : fallback.daily.temperature_2m_max;
   const dailyMin = Array.isArray(daily.temperature_2m_min) ? daily.temperature_2m_min : fallback.daily.temperature_2m_min;
