@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0d2537">
-  <meta name="description" content="A calm, clear weather dashboard for Seville, Spain.">
-  <title>Seville weather · Today</title>
+  <meta name="description" content="Un panel meteorológico claro y tranquilo para Sevilla, España.">
+  <title>El tiempo en Sevilla · Hoy</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -14,79 +14,79 @@
 <body>
   <div class="page-shell">
     <header class="topbar">
-      <a class="brand" href="./" aria-label="Seville weather home">
+      <a class="brand" href="./" aria-label="Inicio del tiempo en Sevilla">
         <span class="brand-mark" aria-hidden="true">☼</span>
-        <span>Seville <strong>weather</strong></span>
+        <span>Sevilla <strong>tiempo</strong></span>
       </a>
       <div class="topbar-actions">
-        <p class="updated" id="updated-label">Updated just now</p>
-        <button class="icon-button" id="refresh-button" type="button" aria-label="Refresh weather data" title="Refresh weather data">↻</button>
+        <p class="updated" id="updated-label">Actualizado ahora</p>
+        <button class="icon-button" id="refresh-button" type="button" aria-label="Actualizar el tiempo" title="Actualizar el tiempo">↻</button>
       </div>
     </header>
 
     <main>
       <section class="hero-grid" aria-labelledby="page-title">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> Local forecast · Andalusia</p>
-          <h1 id="page-title">Good morning,<br><span>Seville.</span></h1>
-          <p class="hero-date" id="hero-date">Thursday, 22 September 2026</p>
+          <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> Tu bienvenida · Andalucía</p>
+          <h1 id="page-title"><span id="greeting">Buenos días</span>,<br><span>Pablo.</span></h1>
+          <p class="hero-date" id="hero-date">Jueves, 22 de septiembre de 2026</p>
           <div class="temperature-lockup">
             <span class="weather-symbol" id="current-symbol" aria-hidden="true">☀</span>
             <span class="temperature" id="current-temperature">28°</span>
             <span class="temperature-unit">C</span>
           </div>
-          <p class="condition" id="current-condition">Clear sky</p>
-          <p class="feels-like">Feels like <strong id="feels-like">29°</strong></p>
+          <p class="condition" id="current-condition">Cielo despejado</p>
+          <p class="feels-like">Sensación térmica <strong id="feels-like">29°</strong></p>
         </div>
-        <div class="sun-card" aria-label="Sunrise and sunset">
+        <div class="sun-card" aria-label="Amanecer y puesta de sol">
           <div class="sun-arc" aria-hidden="true"><span class="sun-orb"></span></div>
           <div class="sun-times">
-            <div><span class="sun-icon">↑</span><span><small>Sunrise</small><strong id="sunrise">08:06</strong></span></div>
-            <div><span class="sun-icon sunset-icon">↓</span><span><small>Sunset</small><strong id="sunset">20:19</strong></span></div>
+            <div><span class="sun-icon">↑</span><span><small>Amanecer</small><strong id="sunrise">08:06</strong></span></div>
+            <div><span class="sun-icon sunset-icon">↓</span><span><small>Puesta de sol</small><strong id="sunset">20:19</strong></span></div>
           </div>
-          <p class="golden-hour">Golden hour is in <strong id="golden-hour">8h 12m</strong></p>
+          <p class="golden-hour">La hora dorada llega en <strong id="golden-hour">8 h 12 min</strong></p>
         </div>
       </section>
 
-      <section class="metric-grid" aria-label="Current weather details">
+      <section class="metric-grid" aria-label="Detalles del tiempo actual">
         <article class="metric-card">
           <div class="metric-icon humidity-icon" aria-hidden="true">◌</div>
-          <div><p>Humidity</p><strong id="humidity">42%</strong><span>Comfortable</span></div>
+          <div><p>Humedad</p><strong id="humidity">42%</strong><span>Agradable</span></div>
         </article>
         <article class="metric-card">
           <div class="metric-icon wind-icon" aria-hidden="true">≋</div>
-          <div><p>Wind</p><strong id="wind">12 km/h</strong><span id="wind-direction">West · Light breeze</span></div>
+          <div><p>Viento</p><strong id="wind">12 km/h</strong><span id="wind-direction">Oeste · Brisa suave</span></div>
         </article>
         <article class="metric-card">
           <div class="metric-icon rain-icon" aria-hidden="true">⌁</div>
-          <div><p>Precipitation</p><strong id="precipitation">0%</strong><span>Very unlikely</span></div>
+          <div><p>Precipitación</p><strong id="precipitation">0%</strong><span>Muy improbable</span></div>
         </article>
         <article class="metric-card uv-card">
           <div class="metric-icon uv-icon" aria-hidden="true">✦</div>
-          <div><p>UV index</p><strong id="uv-index">6 <em>High</em></strong><span>Use sun protection</span></div>
+          <div><p>Índice UV</p><strong id="uv-index">6 <em>Alto</em></strong><span>Usa protección solar</span></div>
         </article>
       </section>
 
       <section class="forecast-layout">
         <div class="section-heading">
-          <div><p class="eyebrow">Plan your day</p><h2>Hourly forecast</h2></div>
-          <button class="text-button" id="hourly-scroll-button" type="button">Next 24 hours <span>→</span></button>
+          <div><p class="eyebrow">Organiza tu día</p><h2>Previsión por horas</h2></div>
+          <button class="text-button" id="hourly-scroll-button" type="button">Próximas 24 horas <span>→</span></button>
         </div>
-        <div class="hourly-scroller" id="hourly-forecast" aria-label="Hourly forecast"></div>
+        <div class="hourly-scroller" id="hourly-forecast" aria-label="Previsión por horas"></div>
       </section>
 
       <section class="forecast-layout week-section">
         <div class="section-heading">
-          <div><p class="eyebrow">The week ahead</p><h2>7-day forecast</h2></div>
-          <p class="muted-label">Seville, ES</p>
+          <div><p class="eyebrow">La semana que viene</p><h2>Previsión de 7 días</h2></div>
+          <p class="muted-label">Sevilla, ES</p>
         </div>
-        <div class="daily-list" id="daily-forecast" aria-label="Seven day forecast"></div>
+        <div class="daily-list" id="daily-forecast" aria-label="Previsión de siete días"></div>
       </section>
     </main>
 
     <footer class="footer">
-      <p><span class="footer-sun" aria-hidden="true">☼</span> Data by <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a> · Seville, Spain</p>
-      <p id="data-status">Forecast updates automatically</p>
+      <p><span class="footer-sun" aria-hidden="true">☼</span> Datos de <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a> · Sevilla, España</p>
+      <p id="data-status">La previsión se actualiza automáticamente</p>
     </footer>
   </div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>

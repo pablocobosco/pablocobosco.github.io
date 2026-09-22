@@ -8,36 +8,40 @@ const fallback = {
 };
 
 const $ = (id) => document.getElementById(id);
-const weatherDescriptions = { 0: ["Clear sky", "☀"], 1: ["Mainly clear", "☀"], 2: ["Partly cloudy", "◒"], 3: ["Overcast", "☁"], 45: ["Foggy", "≋"], 48: ["Rime fog", "≋"], 51: ["Light drizzle", "⌁"], 53: ["Drizzle", "⌁"], 55: ["Heavy drizzle", "⌁"], 61: ["Light rain", "☂"], 63: ["Rain", "☂"], 65: ["Heavy rain", "☂"], 71: ["Light snow", "❄"], 80: ["Rain showers", "☂"], 95: ["Thunderstorm", "ϟ"] };
-const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const shortDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const weatherDescriptions = { 0: ["Cielo despejado", "☀"], 1: ["Principalmente despejado", "☀"], 2: ["Parcialmente nublado", "◒"], 3: ["Cubierto", "☁"], 45: ["Niebla", "≋"], 48: ["Niebla helada", "≋"], 51: ["Llovizna ligera", "⌁"], 53: ["Llovizna", "⌁"], 55: ["Llovizna intensa", "⌁"], 61: ["Lluvia ligera", "☂"], 63: ["Lluvia", "☂"], 65: ["Lluvia intensa", "☂"], 71: ["Nieve ligera", "❄"], 80: ["Chubascos", "☂"], 95: ["Tormenta", "ϟ"] };
+const shortDays = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
-function description(code) { return weatherDescriptions[code] || ["Mixed conditions", "◒"]; }
-function formatTime(value) { return new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Europe/Madrid" }).format(new Date(value)); }
-function formatDate(value, options) { return new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Madrid", ...options }).format(new Date(`${value}T12:00:00`)); }
-function windDirection(degrees) { return ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][Math.round(degrees / 45) % 8]; }
+function description(code) { return weatherDescriptions[code] || ["Tiempo variable", "◒"]; }
+function formatTime(value) { return new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Europe/Madrid" }).format(new Date(value)); }
+function formatDate(value, options) { return new Intl.DateTimeFormat("es-ES", { timeZone: "Europe/Madrid", ...options }).format(new Date(`${value}T12:00:00`)); }
+function windDirection(degrees) { return ["N", "NE", "E", "SE", "S", "SO", "O", "NO"][Math.round(degrees / 45) % 8]; }
+function greeting() {
+  const hour = Number(new Intl.DateTimeFormat("es-ES", { hour: "numeric", hour12: false, timeZone: "Europe/Madrid" }).format(new Date()));
+  return hour < 12 ? "Buenos días" : hour < 20 ? "Buenas tardes" : "Buenas noches";
+}
 
 function render(data, isFallback = false) {
   const current = data.current;
   const [condition, symbol] = description(current.weather_code);
+  $("greeting").textContent = greeting();
   $("hero-date").textContent = formatDate(new Date().toISOString().slice(0, 10), { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   $("current-symbol").textContent = symbol; $("current-temperature").textContent = Math.round(current.temperature_2m);
   $("current-condition").textContent = condition; $("feels-like").textContent = `${Math.round(current.apparent_temperature)}°`;
   $("humidity").textContent = `${current.relative_humidity_2m}%`; $("wind").textContent = `${Math.round(current.wind_speed_10m)} km/h`;
-  $("wind-direction").textContent = `${windDirection(current.wind_direction_10m)} · ${current.wind_speed_10m < 20 ? "Light breeze" : "Breezy"}`;
+  $("wind-direction").textContent = `${windDirection(current.wind_direction_10m)} · ${current.wind_speed_10m < 20 ? "Brisa suave" : "Viento moderado"}`;
   $("precipitation").textContent = `${Math.round(current.precipitation || 0)}%`;
-  $("uv-index").innerHTML = `${Math.round(data.daily.uv_index_max[0])} <em>${data.daily.uv_index_max[0] > 5 ? "High" : "Moderate"}</em>`;
+  $("uv-index").innerHTML = `${Math.round(data.daily.uv_index_max[0])} <em>${data.daily.uv_index_max[0] > 5 ? "Alto" : "Moderado"}</em>`;
   $("sunrise").textContent = formatTime(data.daily.sunrise[0]); $("sunset").textContent = formatTime(data.daily.sunset[0]);
-  $("data-status").textContent = isFallback ? "Showing sample data · Try refreshing to reconnect" : "Forecast updates automatically";
-  $("updated-label").textContent = isFallback ? "Offline sample" : `Updated ${new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit" }).format(new Date())}`;
+  $("data-status").textContent = isFallback ? "Datos de ejemplo · Actualiza para reconectar" : "La previsión se actualiza automáticamente";
+  $("updated-label").textContent = isFallback ? "Datos sin conexión" : `Actualizado a las ${new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit" }).format(new Date())}`;
 
   $("hourly-forecast").innerHTML = data.hourly.time.slice(0, 12).map((time, i) => {
     const [text, icon] = description(data.hourly.weather_code[i]);
-    return `<article class="hour-card"><p>${i === 0 ? "Now" : formatTime(time)}</p><span class="hour-icon" aria-label="${text}">${icon}</span><strong>${Math.round(data.hourly.temperature_2m[i])}°</strong><span class="rain-chance">${data.hourly.precipitation_probability[i]}% rain</span></article>`;
+    return `<article class="hour-card"><p>${i === 0 ? "Ahora" : formatTime(time)}</p><span class="hour-icon" aria-label="${text}">${icon}</span><strong>${Math.round(data.hourly.temperature_2m[i])}°</strong><span class="rain-chance">${data.hourly.precipitation_probability[i]}% lluvia</span></article>`;
   }).join("");
   $("daily-forecast").innerHTML = data.daily.time.map((time, i) => {
     const date = new Date(`${time}T12:00:00`); const [text, icon] = description(data.daily.weather_code[i]);
-    return `<article class="day-row ${i === 0 ? "today" : ""}"><div><span class="day-name">${i === 0 ? "Today" : shortDays[date.getDay()]}</span><span class="day-date"> · ${formatDate(time, { day: "numeric", month: "short" })}</span></div><span class="day-icon" aria-label="${text}">${icon}</span><span class="day-condition">${text}</span><span class="day-rain">${data.daily.precipitation_probability_max[i]}% rain</span><span class="day-temp"><strong>${Math.round(data.daily.temperature_2m_max[i])}°</strong><span>${Math.round(data.daily.temperature_2m_min[i])}°</span></span></article>`;
+    return `<article class="day-row ${i === 0 ? "today" : ""}"><div><span class="day-name">${i === 0 ? "Hoy" : shortDays[date.getDay()]}</span><span class="day-date"> · ${formatDate(time, { day: "numeric", month: "short" })}</span></div><span class="day-icon" aria-label="${text}">${icon}</span><span class="day-condition">${text}</span><span class="day-rain">${data.daily.precipitation_probability_max[i]}% lluvia</span><span class="day-temp"><strong>${Math.round(data.daily.temperature_2m_max[i])}°</strong><span>${Math.round(data.daily.temperature_2m_min[i])}°</span></span></article>`;
   }).join("");
 }
 
@@ -48,7 +52,7 @@ async function loadWeather() {
     if (!response.ok) throw new Error(`Weather request failed: ${response.status}`);
     render(await response.json());
   } catch (error) {
-    console.warn(error); render(fallback, true); showToast("Could not reach the live forecast — showing sample data.");
+    console.warn(error); render(fallback, true); showToast("No se ha podido cargar la previsión — se muestran datos de ejemplo.");
   } finally {
     document.body.classList.remove("is-loading"); $("refresh-button").removeAttribute("aria-busy");
   }
