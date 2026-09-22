@@ -20,7 +20,10 @@ const classSchedule = {
 
 function description(code) { return weatherDescriptions[code] || ["Tiempo variable", "◒"]; }
 function formatTime(value) { return new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Europe/Madrid" }).format(new Date(value)); }
-function formatDate(value, options) { return new Intl.DateTimeFormat("es-ES", { timeZone: "Europe/Madrid", ...options }).format(new Date(`${value}T12:00:00`)); }
+function formatDate(value, options) {
+  const date = value instanceof Date ? value : new Date(/^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T12:00:00` : value);
+  return new Intl.DateTimeFormat("es-ES", { timeZone: "Europe/Madrid", ...options }).format(date);
+}
 function windDirection(degrees) { return ["N", "NE", "E", "SE", "S", "SO", "O", "NO"][Math.round(degrees / 45) % 8]; }
 function greeting() {
   const hour = Number(new Intl.DateTimeFormat("es-ES", { hour: "numeric", hour12: false, timeZone: "Europe/Madrid" }).format(new Date()));
@@ -37,6 +40,28 @@ function renderClasses() {
   $("class-list").innerHTML = classes.length ? classes.map(([time, name, room]) => `<div class="class-item"><span class="class-dot" aria-hidden="true"></span><span class="class-time">${time}</span><span class="class-info"><span class="class-name">${name}</span><span class="class-room">${room}</span></span></div>`).join("") : '<p class="empty-state">No tienes clases programadas para hoy.</p>';
 }
 
+function renderForecasts(data) {
+  const hourly = data.hourly || fallback.hourly;
+  const daily = data.daily || fallback.daily;
+  const hourlyTimes = Array.isArray(hourly.time) ? hourly.time : fallback.hourly.time;
+  const hourlyTemperatures = Array.isArray(hourly.temperature_2m) ? hourly.temperature_2m : fallback.hourly.temperature_2m;
+  const hourlyRain = Array.isArray(hourly.precipitation_probability) ? hourly.precipitation_probability : fallback.hourly.precipitation_probability;
+  const hourlyCodes = Array.isArray(hourly.weather_code) ? hourly.weather_code : fallback.hourly.weather_code;
+  const dailyTimes = Array.isArray(daily.time) ? daily.time : fallback.daily.time;
+  const dailyMax = Array.isArray(daily.temperature_2m_max) ? daily.temperature_2m_max : fallback.daily.temperature_2m_max;
+  const dailyMin = Array.isArray(daily.temperature_2m_min) ? daily.temperature_2m_min : fallback.daily.temperature_2m_min;
+  const dailyRain = Array.isArray(daily.precipitation_probability_max) ? daily.precipitation_probability_max : fallback.daily.precipitation_probability_max;
+  const dailyCodes = Array.isArray(daily.weather_code) ? daily.weather_code : fallback.daily.weather_code;
+  $("hourly-forecast").innerHTML = hourlyTimes.slice(0, 12).map((time, i) => {
+    const [text, icon] = description(hourlyCodes[i]);
+    return `<article class="hour-card"><p>${i === 0 ? "Ahora" : formatTime(time)}</p><span class="hour-icon" aria-label="${text}">${icon}</span><strong>${Math.round(hourlyTemperatures[i])}°</strong><span class="rain-chance">${hourlyRain[i]}% lluvia</span></article>`;
+  }).join("");
+  $("daily-forecast").innerHTML = dailyTimes.slice(0, 7).map((time, i) => {
+    const date = new Date(`${time}T12:00:00`); const [text, icon] = description(dailyCodes[i]);
+    return `<article class="day-row ${i === 0 ? "today" : ""}"><div><span class="day-name">${i === 0 ? "Hoy" : shortDays[date.getDay()]}</span><span class="day-date"> · ${formatDate(time, { day: "numeric", month: "short" })}</span></div><span class="day-icon" aria-label="${text}">${icon}</span><span class="day-condition">${text}</span><span class="day-rain">${dailyRain[i]}% lluvia</span><span class="day-temp"><strong>${Math.round(dailyMax[i])}°</strong><span>${Math.round(dailyMin[i])}°</span></span></article>`;
+  }).join("");
+}
+
 function render(data, isFallback = false) {
   const current = data.current;
   const [condition, symbol] = description(current.weather_code);
@@ -50,15 +75,7 @@ function render(data, isFallback = false) {
   $("uv-index").innerHTML = `${Math.round(data.daily.uv_index_max[0])} <em>${data.daily.uv_index_max[0] > 5 ? "Alto" : "Moderado"}</em>`;
   $("data-status").textContent = isFallback ? "Datos de ejemplo · Actualiza para reconectar" : "La previsión se actualiza automáticamente";
   $("updated-label").textContent = isFallback ? "Datos sin conexión" : `Actualizado a las ${new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit" }).format(new Date())}`;
-
-  $("hourly-forecast").innerHTML = data.hourly.time.slice(0, 12).map((time, i) => {
-    const [text, icon] = description(data.hourly.weather_code[i]);
-    return `<article class="hour-card"><p>${i === 0 ? "Ahora" : formatTime(time)}</p><span class="hour-icon" aria-label="${text}">${icon}</span><strong>${Math.round(data.hourly.temperature_2m[i])}°</strong><span class="rain-chance">${data.hourly.precipitation_probability[i]}% lluvia</span></article>`;
-  }).join("");
-  $("daily-forecast").innerHTML = data.daily.time.map((time, i) => {
-    const date = new Date(`${time}T12:00:00`); const [text, icon] = description(data.daily.weather_code[i]);
-    return `<article class="day-row ${i === 0 ? "today" : ""}"><div><span class="day-name">${i === 0 ? "Hoy" : shortDays[date.getDay()]}</span><span class="day-date"> · ${formatDate(time, { day: "numeric", month: "short" })}</span></div><span class="day-icon" aria-label="${text}">${icon}</span><span class="day-condition">${text}</span><span class="day-rain">${data.daily.precipitation_probability_max[i]}% lluvia</span><span class="day-temp"><strong>${Math.round(data.daily.temperature_2m_max[i])}°</strong><span>${Math.round(data.daily.temperature_2m_min[i])}°</span></span></article>`;
-  }).join("");
+  renderForecasts(data);
 }
 
 async function loadWeather() {
@@ -68,7 +85,9 @@ async function loadWeather() {
     if (!response.ok) throw new Error(`Weather request failed: ${response.status}`);
     render(await response.json());
   } catch (error) {
-    console.warn(error); render(fallback, true); showToast("No se ha podido cargar la previsión — se muestran datos de ejemplo.");
+    console.warn(error);
+    try { render(fallback, true); } catch (fallbackError) { console.warn(fallbackError); renderForecasts(fallback); }
+    showToast("No se ha podido cargar la previsión — se muestran datos de ejemplo.");
   } finally {
     document.body.classList.remove("is-loading"); $("refresh-button").removeAttribute("aria-busy");
   }
