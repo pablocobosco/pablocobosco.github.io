@@ -58,6 +58,28 @@ h1 span { color: var(--teal); }
 .metric-card strong { display: block; font-family: "Manrope", sans-serif; font-size: 19px; letter-spacing: -.04em; }
 .metric-card strong em { color: #dc8b2f; font-family: "DM Sans", sans-serif; font-size: 11px; font-style: normal; font-weight: 500; letter-spacing: 0; margin-left: 3px; }
 .metric-card span { color: var(--muted); display: block; font-size: 10px; margin-top: 3px; white-space: nowrap; }
+.meal-section { margin-top: 15px; }
+.meal-card { background: linear-gradient(135deg, #f2c36b, #f4a35d); border-radius: 18px; color: #173443; padding: 24px 26px 20px; }
+.meal-heading, .weekly-menu-heading { align-items: flex-start; display: flex; justify-content: space-between; }
+.meal-card .eyebrow { color: #8c4e20; margin-bottom: 6px; }
+.meal-card h2 { font-size: 26px; }
+.meal-time { background: rgba(255,255,255,.52); border-radius: 20px; color: #76441f; font-size: 11px; font-weight: 700; padding: 8px 11px; }
+.meal-day { color: #85502a; font-size: 12px; margin: 7px 0 15px; }
+.meal-dishes { display: flex; flex-wrap: wrap; gap: 8px; }
+.meal-dish { background: rgba(255,255,255,.65); border-radius: 9px; font-size: 12px; font-weight: 600; padding: 9px 11px; }
+.menu-toggle { background: transparent; border: 1px solid rgba(118,68,31,.35); border-radius: 20px; color: #76441f; font-size: 11px; font-weight: 700; margin-top: 18px; padding: 8px 13px; }
+.menu-toggle span { font-size: 15px; margin-left: 5px; }
+.weekly-menu { background: white; border: 1px solid var(--line); border-radius: 15px; margin-top: 10px; padding: 22px; }
+.weekly-menu-heading { border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+.weekly-menu-heading .eyebrow { margin: 0; }
+.weekly-menu-heading > span { color: var(--muted); font-size: 11px; }
+.weekly-menu-grid { display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 9px; overflow-x: auto; padding-top: 15px; }
+.menu-day { border-right: 1px solid var(--line); min-width: 120px; padding-right: 9px; }
+.menu-day:last-child { border-right: 0; }
+.menu-day-name { color: var(--teal); font-size: 12px; font-weight: 700; }
+.menu-type { color: var(--muted); font-size: 10px; font-weight: 700; margin: 13px 0 5px; text-transform: uppercase; }
+.menu-item { border-bottom: 1px solid #edf2f1; font-size: 11px; line-height: 1.35; padding: 5px 0; }
+.menu-item:last-child { border-bottom: 0; }
 .compact-heading { margin-bottom: 17px; }
 .compact-heading h2 { font-size: 22px; }
 .date-pill { background: #e5f3ee; border-radius: 20px; color: var(--teal-dark); font-size: 11px; font-weight: 600; padding: 7px 11px; }
@@ -106,6 +128,9 @@ h2 { font-size: 26px; }
   .schedule-card { max-width: 480px; width: 100%; }
   .metric-grid { grid-template-columns: repeat(2, 1fr); }
   .metric-card { min-height: 96px; padding: 16px 13px; }
+  .meal-card { padding: 20px; }
+  .meal-heading { gap: 12px; }
+  .meal-card h2 { font-size: 22px; }
   .forecast-layout { margin-top: 48px; }
   .section-heading { align-items: flex-end; } .muted-label { display: none; }
   .day-row { grid-template-columns: 1fr 42px 1fr 45px; padding: 0 8px; }

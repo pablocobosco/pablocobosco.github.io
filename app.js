@@ -17,6 +17,16 @@ const classSchedule = {
   4: [["15:30–17:20", "IMD", "H0.13 · B1.33 · B1.34 · B1.35"], ["17:40–19:30", "FP", "H0.13 · I2.31 · I2.33 · I2.35"]],
   5: [["15:30–17:20", "ALN", "H0.13"], ["17:40–19:30", "AE", "H0.13"]]
 };
+// Actualiza este bloque cada semana con el nuevo PDF recibido.
+const weeklyMenu = {
+  1: { day: "Lunes 21", lunch: ["Arroz con carne", "Sopa de tomate", "Salchichas frescas", "Bonito al pimentón", "Puré de patatas, pimientos asados y fruta fresca"], dinner: ["Macarrones carbonara", "Espinacas salteadas con york", "Churrasco de cerdo a la plancha", "Abadejo a la plancha", "Brócoli salteado con champiñones al ajillo"] },
+  2: { day: "Martes 22", lunch: ["Lentejas con chorizo", "Ensalada de hojas", "Ragout de ternera con verduras", "Gallo al horno", "Salteado de ajetes y gambas, patatas panaderas y fruta"], dinner: ["Sopa de fideos", "Tomate aliñado con atún", "Jamoncitos de pollo con nata y champiñones", "Merluza a la plancha", "Arroz salteado con zanahorias al ajillo"] },
+  3: { day: "Miércoles 23", lunch: ["Fideuá de marisco", "Salmorejo con huevo y jamón picado", "Chuletas a la plancha", "Dorado al horno", "Berenjenas con miel y habitas baby con york"], dinner: ["Artisan pizza", "Fruta fresca y lácteo"] },
+  4: { day: "Jueves 24", lunch: ["Hojaldre de serranito", "Arroz campero", "Escalope de pollo empanado", "Fogonero al horno", "Patatas dollar, pimientos tricolor y fruta"], dinner: ["Gratén de patatas con york", "Crema de zanahorias", "Tortilla francesa", "Calamares a la plancha", "Espirales salteadas, calabaza asada y fruta"] },
+  5: { day: "Viernes 25", lunch: ["Patatas a la riojana", "Ensalada de tomate y maíz", "Contramuslo de pollo teriyaki", "Boquerones al limón", "Guisantes salteados y coliflor gratinada"], dinner: ["Sopa de picadillo", "Wok de tallarines con verdura y soja", "Empanadillas de carne", "Palometa al horno", "Arroz pilaf, alcachofas salteadas y fruta"] },
+  6: { day: "Sábado 26", lunch: ["Potaje de garbanzos", "Ensaladilla rusa", "Pavo a la plancha", "Palometa a la riojana", "Lacitos salteados y judías verdes"], dinner: ["Crema de calabaza", "Arroz 3 delicias", "San jacobos", "Gallineta a la roteña", "Pan de gambas, verduras al grill y fruta"] },
+  0: { day: "Domingo 27", lunch: ["Tabboulé con maíz", "Ensalada campera", "Cinta de lomo al horno", "Jurel a la plancha", "Espárragos trigueros, aros de cebolla y fruta"], dinner: ["Espaguetis napolitana", "Sopa de verduras", "Hamburguesa completa", "Merluza a la plancha", "Patatas deluxe, maíz salteado y fruta"] }
+};
 
 function description(code) { return weatherDescriptions[code] || ["Tiempo variable", "◒"]; }
 function formatTime(value) { return new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Europe/Madrid" }).format(new Date(value)); }
@@ -38,6 +48,17 @@ function renderClasses() {
   const classes = classSchedule[today] || [];
   $("schedule-day").textContent = classes.length ? "Hoy" : "Sin clases";
   $("class-list").innerHTML = classes.length ? classes.map(([time, name, room]) => `<div class="class-item"><span class="class-dot" aria-hidden="true"></span><span class="class-time">${time}</span><span class="class-info"><span class="class-name">${name}</span><span class="class-room">${room}</span></span></div>`).join("") : '<p class="empty-state">No tienes clases programadas para hoy.</p>';
+}
+function renderMenu() {
+  const menu = weeklyMenu[new Date().getDay()] || weeklyMenu[1];
+  const hour = Number(new Intl.DateTimeFormat("en-US", { hour: "numeric", hour12: false, timeZone: "Europe/Madrid" }).format(new Date()));
+  const isLunch = hour < 21;
+  const dishes = isLunch ? menu.lunch : menu.dinner;
+  $("meal-title").textContent = isLunch ? "Comida" : "Cena";
+  $("meal-time").textContent = isLunch ? "13:00–14:35" : "21:00–22:30";
+  $("meal-day").textContent = `${menu.day} · Menú de hoy`;
+  $("meal-dishes").innerHTML = dishes.map((dish) => `<span class="meal-dish">${dish}</span>`).join("");
+  $("weekly-menu-grid").innerHTML = Object.values(weeklyMenu).map((item) => `<article class="menu-day"><div class="menu-day-name">${item.day}</div><p class="menu-type">Comida</p>${item.lunch.map((dish) => `<div class="menu-item">${dish}</div>`).join("")}<p class="menu-type">Cena</p>${item.dinner.map((dish) => `<div class="menu-item">${dish}</div>`).join("")}</article>`).join("");
 }
 
 function renderForecasts(data) {
@@ -95,6 +116,14 @@ async function loadWeather() {
 function showToast(message) { const toast = $("toast"); toast.textContent = message; toast.classList.add("visible"); setTimeout(() => toast.classList.remove("visible"), 4500); }
 $("refresh-button").addEventListener("click", loadWeather);
 $("hourly-scroll-button").addEventListener("click", () => $("hourly-forecast").scrollBy({ left: 300, behavior: "smooth" }));
+ $("menu-toggle").addEventListener("click", () => {
+  const menu = $("weekly-menu");
+  const expanded = $("menu-toggle").getAttribute("aria-expanded") === "true";
+  menu.hidden = expanded;
+  $("menu-toggle").setAttribute("aria-expanded", String(!expanded));
+  $("menu-toggle").innerHTML = expanded ? "Ver toda la semana <span>↓</span>" : "Ocultar menú semanal <span>↑</span>";
+});
 renderClasses();
+renderMenu();
 render(fallback, true);
 loadWeather();
