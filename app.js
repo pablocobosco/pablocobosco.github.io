@@ -54,8 +54,10 @@ function renderClasses() {
 }
 function renderMenu() {
   const menu = weeklyMenu[new Date().getDay()] || weeklyMenu[1];
-  const hour = Number(new Intl.DateTimeFormat("en-US", { hour: "numeric", hour12: false, timeZone: "Europe/Madrid" }).format(new Date()));
-  const isLunch = hour < 21;
+  const clock = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "numeric", hour12: false, timeZone: "Europe/Madrid" }).formatToParts(new Date());
+  const hour = Number(clock.find((part) => part.type === "hour").value);
+  const minute = Number(clock.find((part) => part.type === "minute").value);
+  const isLunch = hour < 14 || (hour === 14 && minute < 30);
   const dishes = isLunch ? menu.lunch : menu.dinner;
   $("meal-title").textContent = isLunch ? "Comida" : "Cena";
   $("meal-time").textContent = isLunch ? "13:00–14:35" : "21:00–22:30";
