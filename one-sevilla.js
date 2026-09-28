@@ -9,6 +9,7 @@ const weatherLabels = {
 };
 const element = (id) => document.getElementById(id);
 const weeklyMenu = window.oneSevillaWeeklyMenu;
+const mondayFirstMenu = window.oneSevillaWeekOrder.map((day) => weeklyMenu[day]).filter(Boolean);
 const weekdays = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 0 };
 
 function madridClock() {
@@ -34,7 +35,7 @@ function renderMenu() {
   element("meal-hours").textContent = isLunch ? "13:00 — 14:35" : "21:00 — 22:30";
   element("meal-day").textContent = menu.day;
   element("dish-list").innerHTML = (isLunch ? menu.lunch : menu.dinner).map((dish) => `<li>${dish}</li>`).join("");
-  element("weekly-grid").innerHTML = Object.values(weeklyMenu).map((day) =>
+  element("weekly-grid").innerHTML = mondayFirstMenu.map((day) =>
     `<article class="menu-day"><div class="menu-day-name">${day.day}</div><p class="menu-type">COMIDA</p>${day.lunch.map((dish) => `<div class="menu-item">${dish}</div>`).join("")}<p class="menu-type">CENA</p>${day.dinner.map((dish) => `<div class="menu-item">${dish}</div>`).join("")}</article>`
   ).join("");
 }

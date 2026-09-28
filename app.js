@@ -11,6 +11,7 @@ const $ = (id) => document.getElementById(id);
 const weatherDescriptions = { 0: ["Cielo despejado", "☀"], 1: ["Principalmente despejado", "☀"], 2: ["Parcialmente nublado", "◒"], 3: ["Cubierto", "☁"], 45: ["Niebla", "≋"], 48: ["Niebla helada", "≋"], 51: ["Llovizna ligera", "⌁"], 53: ["Llovizna", "⌁"], 55: ["Llovizna intensa", "⌁"], 61: ["Lluvia ligera", "☂"], 63: ["Lluvia", "☂"], 65: ["Lluvia intensa", "☂"], 71: ["Nieve ligera", "❄"], 80: ["Chubascos", "☂"], 95: ["Tormenta", "ϟ"] };
 const shortDays = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 const weeklyMenu = window.oneSevillaWeeklyMenu;
+const mondayFirstMenu = window.oneSevillaWeekOrder.map((day) => weeklyMenu[day]).filter(Boolean);
 const classSchedule = {
   1: [["15:30–17:20", "CED", "H0.13 · G1.32 · G1.35"], ["17:40–19:30", "FP", "H0.13"], ["19:40–21:30", "CED", "G1.32 · G1.35"]],
   2: [["15:30–17:20", "IMD", "H0.13"], ["17:40–19:30", "ALN", "H0.13 · B1.31 · B1.33"]],
@@ -44,7 +45,7 @@ function renderClasses() {
 }
 function renderMenu() {
   $("weekly-menu-range").textContent = window.oneSevillaMenuRange;
-  const menu = weeklyMenu[new Date().getDay()] || weeklyMenu[1];
+  const menu = weeklyMenu[todayKey()] || weeklyMenu[1];
   const clock = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "numeric", hour12: false, timeZone: "Europe/Madrid" }).formatToParts(new Date());
   const hour = Number(clock.find((part) => part.type === "hour").value);
   const minute = Number(clock.find((part) => part.type === "minute").value);
@@ -54,7 +55,7 @@ function renderMenu() {
   $("meal-time").textContent = isLunch ? "13:00–14:35" : "21:00–22:30";
   $("meal-day").textContent = `${menu.day} · Menú de hoy`;
   $("meal-dishes").innerHTML = dishes.map((dish) => `<span class="meal-dish">${dish}</span>`).join("");
-  $("weekly-menu-grid").innerHTML = Object.values(weeklyMenu).map((item) => `<article class="menu-day"><div class="menu-day-name">${item.day}</div><p class="menu-type">Comida</p>${item.lunch.map((dish) => `<div class="menu-item">${dish}</div>`).join("")}<p class="menu-type">Cena</p>${item.dinner.map((dish) => `<div class="menu-item">${dish}</div>`).join("")}</article>`).join("");
+  $("weekly-menu-grid").innerHTML = mondayFirstMenu.map((item) => `<article class="menu-day"><div class="menu-day-name">${item.day}</div><p class="menu-type">Comida</p>${item.lunch.map((dish) => `<div class="menu-item">${dish}</div>`).join("")}<p class="menu-type">Cena</p>${item.dinner.map((dish) => `<div class="menu-item">${dish}</div>`).join("")}</article>`).join("");
 }
 
 function renderForecasts(data) {
