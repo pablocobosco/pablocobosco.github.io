@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#145b36">
+  <meta name="description" content="El tiempo y el menú diario de ONE Sevilla.">
+  <title>ONE Sevilla · Tu día, más fácil</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="one-sevilla.css">
+</head>
+<body>
+  <div class="corporate-shell">
+    <header class="corporate-header">
+      <a class="logo-link" href="one-sevilla.html" aria-label="ONE Sevilla, inicio">
+        <img src="assets/one-sevilla-logo.svg" alt="ONE Sevilla">
+      </a>
+      <div class="header-right">
+        <span class="location-tag"><span class="status-dot" aria-hidden="true"></span> SEVILLA</span>
+        <a class="back-link" href="./">Panel Diario <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <main>
+      <section class="welcome-hero" aria-labelledby="welcome-title">
+        <img class="hero-photo" src="assets/one-sevilla-entrada.jpg" alt="Entrada y fachada de la residencia ONE Sevilla">
+        <div class="hero-shade"></div>
+        <div class="hero-copy">
+          <p class="hero-overline">RESIDENCIA UNIVERSITARIA</p>
+          <h1 id="welcome-title">Tu día empieza<br>en <span>ONE Sevilla.</span></h1>
+          <p class="hero-date" id="today-date">Sevilla · Hoy</p>
+        </div>
+        <article class="weather-card" aria-label="El tiempo actual en ONE Sevilla" aria-live="polite">
+          <div class="weather-card-top">
+            <div><p class="card-overline">EL TIEMPO AHORA</p><p class="weather-place">ONE Sevilla</p></div>
+            <span class="weather-icon" id="weather-icon" aria-hidden="true">☀</span>
+          </div>
+          <div class="weather-temperature"><strong id="temperature">--°</strong><span>°C</span></div>
+          <p class="weather-condition" id="condition">Consultando el tiempo…</p>
+          <div class="weather-details">
+            <div><span> Sensación</span><strong id="feels-like">--°</strong></div>
+            <div><span>Humedad</span><strong id="humidity">--%</strong></div>
+            <div><span>Viento</span><strong id="wind">-- km/h</strong></div>
+          </div>
+          <p class="weather-updated" id="weather-updated">Datos de Open-Meteo</p>
+        </article>
+      </section>
+
+      <section class="dining-section" aria-labelledby="meal-title">
+        <div class="section-intro">
+          <p class="section-overline">BUENO, FRESCO Y AQUÍ MISMO</p>
+          <h2 id="meal-title">Hoy en la mesa</h2>
+          <p>Descubre qué toca en el comedor de ONE Sevilla.</p>
+        </div>
+        <div class="dining-card">
+          <div class="dining-photo-wrap">
+            <img class="dining-photo" src="assets/one-sevilla-comedor.jpg" alt="Comedor común de la residencia ONE Sevilla">
+            <span class="dining-photo-label">Nuestro comedor</span>
+          </div>
+          <div class="dining-content">
+            <div class="meal-meta">
+              <span class="meal-kind" id="meal-kind">COMIDA</span>
+              <span class="meal-hours" id="meal-hours">13:00 — 14:35</span>
+            </div>
+            <h3 id="meal-day">Menú de hoy</h3>
+            <ul class="dish-list" id="dish-list" aria-live="polite"></ul>
+            <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="weekly-menu">
+              Ver toda la semana <span aria-hidden="true">↓</span>
+            </button>
+          </div>
+        </div>
+        <div class="weekly-menu" id="weekly-menu" hidden>
+          <div class="weekly-header">
+            <div><p class="section-overline">COMEDOR ONE SEVILLA</p><h3>Menú de la semana</h3></div>
+            <span id="menu-range"></span>
+          </div>
+          <div class="weekly-grid" id="weekly-grid"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="corporate-footer">
+      <img src="assets/one-sevilla-logo.svg" alt="" aria-hidden="true">
+      <span>ONE Sevilla · Residencia Universitaria</span>
+      <span id="weather-status">El tiempo de Sevilla</span>
+    </footer>
+  </div>
+  <script src="menu-data.js"></script>
+  <script src="one-sevilla.js"></script>
+</body>
+</html>

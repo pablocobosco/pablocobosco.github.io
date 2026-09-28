@@ -10,6 +10,7 @@ const fallback = {
 const $ = (id) => document.getElementById(id);
 const weatherDescriptions = { 0: ["Cielo despejado", "☀"], 1: ["Principalmente despejado", "☀"], 2: ["Parcialmente nublado", "◒"], 3: ["Cubierto", "☁"], 45: ["Niebla", "≋"], 48: ["Niebla helada", "≋"], 51: ["Llovizna ligera", "⌁"], 53: ["Llovizna", "⌁"], 55: ["Llovizna intensa", "⌁"], 61: ["Lluvia ligera", "☂"], 63: ["Lluvia", "☂"], 65: ["Lluvia intensa", "☂"], 71: ["Nieve ligera", "❄"], 80: ["Chubascos", "☂"], 95: ["Tormenta", "ϟ"] };
 const shortDays = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+const weeklyMenu = window.oneSevillaWeeklyMenu;
 const classSchedule = {
   1: [["15:30–17:20", "CED", "H0.13 · G1.32 · G1.35"], ["17:40–19:30", "FP", "H0.13"], ["19:40–21:30", "CED", "G1.32 · G1.35"]],
   2: [["15:30–17:20", "IMD", "H0.13"], ["17:40–19:30", "ALN", "H0.13 · B1.31 · B1.33"]],
@@ -17,17 +18,6 @@ const classSchedule = {
   4: [["15:30–17:20", "IMD", "H0.13 · B1.33 · B1.34 · B1.35"], ["17:40–19:30", "FP", "H0.13 · I2.31 · I2.33 · I2.35"]],
   5: [["15:30–17:20", "ALN", "H0.13"], ["17:40–19:30", "AE", "H0.13"]]
 };
-// Menú de One Sevilla para la semana del 28 de septiembre al 4 de octubre.
-const weeklyMenu = {
-  1: { day: "Lunes 28", lunch: ["Fabada asturiana", "Picadillo de atún", "Salchichas frescas a la plancha", "Salmón en salsa Thai", "Puré de patatas", "Calabacín con reducción de soja", "Fruta fresca y lácteo"], dinner: ["Patatas cheese bacon", "Ensalada César", "Croquetas de cocido", "Merluza a la plancha", "Coditos salteados", "Coliflor en tempura", "Fruta fresca y lácteo"] },
-  2: { day: "Martes 29", lunch: ["Arroz con tomate", "Garbanzos al curry", "Chuleta a la plancha", "Bonito encebollado", "Patatas a lo pobre", "Zanahoria al vapor con cebolla", "Fruta fresca y lácteo"], dinner: ["Macarrones gratinados con atún", "Sopa de ave con fideos", "Jamoncitos de pollo en salsa barbacoa", "Tortilla de jamón york", "Berenjenas con miel", "Pimientos verdes a la plancha", "Fruta fresca y lácteo"] },
-  3: { day: "Miércoles 30", lunch: ["Hojaldre de salmón, queso y cebolla caramelizada casera", "Pastel de carne", "Rabas de calamar rebozadas", "Magro de cerdo en salsa", "Arroz cajón", "Tomate a la provenzal", "Fruta fresca y lácteo"], dinner: ["Ensalada de pollo a la barbacoa", "Tallarines con nata y champiñones", "Wrap de pollo", "Abadejo a la plancha", "Nachos", "Habitas baby con pimentón", "Fruta fresca y lácteo"] },
-  4: { day: "Jueves 1 oct", lunch: ["Fideuá de carne", "Gazpacho andaluz", "Tortilla de patatas", "Bacalao al pil pil", "Brócoli salteado", "Pimientos morrones salteados", "Fruta fresca y lácteo"], dinner: ["Crema de hortalizas", "Ensalada caprese", "Panini 4 estaciones", "Empanada de atún", "Fetuccini de espinacas", "Maíz especiado", "Fruta fresca y lácteo"] },
-  5: { day: "Viernes 2 oct", lunch: ["Lentejas con chorizo", "Ensalada de lechuga, col y pepino", "Escalope de pollo empanado", "Boquerones en tempura", "Patatas julianas", "Espárragos verdes a la plancha", "Fruta fresca y lácteo"], dinner: ["Fiesta de bienvenida · barbacoa"], },
-  6: { day: "Sábado 3 oct", lunch: ["Lasaña de carne", "Patatas aliñadas", "Albóndigas en salsa", "Gallineta a la vizcaína", "Patatas risoladas", "Cous cous con frutos secos", "Fruta fresca y lácteo"], dinner: ["Judías verdes salteadas", "Ensalada mediterránea", "Flamenquín de pollo", "Palometa al horno", "Patatas deluxe", "Tomate al horno", "Fruta fresca y lácteo"] },
-  0: { day: "Domingo 4 oct", lunch: ["Arroz al horno", "Tomate aliñado", "Pollo asado en su jugo", "Fogonero a la plancha", "Guisantes salteados", "Champiñones al ajillo", "Fruta fresca y lácteo"], dinner: ["Pasta con tomate", "Verduras asadas", "Pizza mediterránea", "Merluza al ajillo", "Patatas chips", "Wok de verdura", "Fruta fresca y lácteo"] }
-};
-
 function description(code) { return weatherDescriptions[code] || ["Tiempo variable", "◒"]; }
 function formatTime(value) {
   if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(value)) return value.slice(11, 16);
@@ -53,6 +43,7 @@ function renderClasses() {
   $("class-list").innerHTML = classes.length ? classes.map(([time, name, room]) => `<div class="class-item"><span class="class-dot" aria-hidden="true"></span><span class="class-time">${time}</span><span class="class-info"><span class="class-name">${name}</span><span class="class-room">${room}</span></span></div>`).join("") : '<p class="empty-state">No tienes clases programadas para hoy.</p>';
 }
 function renderMenu() {
+  $("weekly-menu-range").textContent = window.oneSevillaMenuRange;
   const menu = weeklyMenu[new Date().getDay()] || weeklyMenu[1];
   const clock = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "numeric", hour12: false, timeZone: "Europe/Madrid" }).formatToParts(new Date());
   const hour = Number(clock.find((part) => part.type === "hour").value);

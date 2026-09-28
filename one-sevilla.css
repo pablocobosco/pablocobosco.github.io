@@ -1,0 +1,112 @@
+:root {
+  color-scheme: light;
+  --green: #087b40;
+  --deep-green: #145b36;
+  --lime: #c8de32;
+  --ink: #20332a;
+  --muted: #728078;
+  --line: #e6ebe6;
+  --paper: #f5f7f3;
+  font-family: "DM Sans", sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; background: var(--paper); }
+a, button { font: inherit; }
+button { cursor: pointer; }
+.corporate-shell { margin: 0 auto; max-width: 1440px; padding: 0 56px; }
+.corporate-header { align-items: center; display: flex; height: 91px; justify-content: space-between; }
+.logo-link { align-items: center; background: white; border-radius: 9px; display: flex; height: 59px; padding: 6px 13px; }
+.logo-link img { display: block; height: 45px; width: auto; }
+.header-right { align-items: center; display: flex; gap: 26px; }
+.location-tag { align-items: center; color: #57695e; display: flex; font-size: 10px; font-weight: 700; gap: 9px; letter-spacing: .15em; }
+.status-dot { background: #40a66b; border-radius: 50%; box-shadow: 0 0 0 4px #e0efe4; height: 7px; width: 7px; }
+.back-link { color: var(--deep-green); font-size: 12px; font-weight: 600; text-decoration: none; }
+.back-link span { font-size: 15px; margin-left: 6px; }
+.welcome-hero { align-items: center; border-radius: 20px; display: flex; min-height: 435px; overflow: hidden; padding: 52px 6.5%; position: relative; }
+.hero-photo, .hero-shade { height: 100%; inset: 0; position: absolute; width: 100%; }
+.hero-photo { object-fit: cover; object-position: center 54%; }
+.hero-shade { background: linear-gradient(90deg, rgba(9,43,27,.79) 0%, rgba(12,47,30,.48) 49%, rgba(12,47,30,.1) 100%), linear-gradient(0deg, rgba(5,30,18,.23), transparent 60%); }
+.hero-copy { color: white; position: relative; z-index: 1; }
+.hero-overline, .card-overline, .section-overline { font-size: 10px; font-weight: 700; letter-spacing: .17em; margin: 0; }
+.hero-overline { color: #d2e3b9; }
+h1, h2, h3, p { margin-top: 0; }
+h1 { font-family: "Manrope", sans-serif; font-size: clamp(40px, 5.4vw, 68px); letter-spacing: -.065em; line-height: 1.04; margin: 20px 0 18px; }
+h1 span { color: #d3e86b; }
+.hero-date { color: rgba(255,255,255,.84); font-size: 13px; margin: 0; text-transform: capitalize; }
+.weather-card { backdrop-filter: blur(16px); background: rgba(255,255,255,.94); border: 1px solid rgba(255,255,255,.58); border-radius: 17px; margin-left: auto; max-width: 278px; padding: 22px 23px 17px; position: relative; width: 34%; z-index: 1; box-shadow: 0 16px 44px rgba(5,33,18,.18); }
+.weather-card-top { align-items: center; display: flex; justify-content: space-between; }
+.card-overline { color: var(--green); font-size: 9px; }
+.weather-place { color: var(--muted); font-size: 11px; margin: 4px 0 0; }
+.weather-icon { color: #efa735; font-size: 29px; }
+.weather-temperature { align-items: flex-start; display: flex; margin-top: 15px; }
+.weather-temperature strong { font-family: "Manrope", sans-serif; font-size: 58px; letter-spacing: -.08em; line-height: 1; }
+.weather-temperature span { color: var(--green); font-size: 15px; font-weight: 700; margin: 4px 0 0 7px; }
+.weather-condition { color: var(--muted); font-size: 12px; margin: 5px 0 17px; }
+.weather-details { border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; padding-top: 13px; }
+.weather-details span, .weather-details strong { display: block; }
+.weather-details span { color: var(--muted); font-size: 9px; margin-bottom: 5px; }
+.weather-details strong { font-size: 11px; }
+.weather-updated { color: #89958d; font-size: 9px; margin: 13px 0 0; }
+.dining-section { margin: 59px 0 0; }
+.section-intro { margin-bottom: 20px; }
+.section-overline { color: var(--green); font-size: 9px; }
+.section-intro h2, .weekly-header h3 { font-family: "Manrope", sans-serif; font-size: 29px; letter-spacing: -.05em; margin: 7px 0 5px; }
+.section-intro > p:last-child { color: var(--muted); font-size: 12px; margin: 0; }
+.dining-card { background: white; border: 1px solid var(--line); border-radius: 17px; display: grid; grid-template-columns: .95fr 1.05fr; min-height: 310px; overflow: hidden; }
+.dining-photo-wrap { min-height: 310px; overflow: hidden; position: relative; }
+.dining-photo { height: 100%; inset: 0; object-fit: cover; position: absolute; transition: transform .5s ease; width: 100%; }
+.dining-card:hover .dining-photo { transform: scale(1.025); }
+.dining-photo-label { background: rgba(18,48,31,.8); border-radius: 20px; bottom: 17px; color: white; font-size: 10px; left: 17px; padding: 8px 12px; position: absolute; }
+.dining-content { align-self: center; padding: 30px clamp(24px, 4vw, 55px); }
+.meal-meta { align-items: center; display: flex; justify-content: space-between; }
+.meal-kind { background: #eaf3e5; border-radius: 20px; color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: .13em; padding: 7px 11px; }
+.meal-hours { color: var(--muted); font-size: 10px; }
+.dining-content h3 { font-family: "Manrope", sans-serif; font-size: 23px; letter-spacing: -.04em; margin: 15px 0 11px; }
+.dish-list { display: grid; gap: 7px; list-style: none; margin: 0; padding: 0; }
+.dish-list li { align-items: flex-start; color: #526158; display: flex; font-size: 11px; line-height: 1.45; }
+.dish-list li::before { background: var(--lime); border-radius: 50%; content: ""; flex: 0 0 6px; height: 6px; margin: 4px 9px 0 0; }
+.menu-toggle { background: var(--deep-green); border: 0; border-radius: 7px; color: white; font-size: 10px; font-weight: 600; margin-top: 17px; padding: 11px 14px; transition: background .2s; }
+.menu-toggle:hover { background: var(--green); }
+.menu-toggle span { margin-left: 7px; }
+.weekly-menu { background: white; border: 1px solid var(--line); border-radius: 15px; margin-top: 12px; padding: 25px; }
+.weekly-header { align-items: flex-end; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; padding-bottom: 15px; }
+.weekly-header h3 { font-size: 23px; margin-bottom: 0; }
+.weekly-header > span { color: var(--muted); font-size: 10px; }
+.weekly-grid { display: grid; grid-auto-columns: minmax(170px, 1fr); grid-auto-flow: column; gap: 13px; overflow-x: auto; padding: 18px 0 5px; }
+.menu-day { border-right: 1px solid var(--line); min-width: 170px; padding-right: 13px; }
+.menu-day:last-child { border: 0; }
+.menu-day-name { color: var(--deep-green); font-size: 12px; font-weight: 700; }
+.menu-type { color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: .1em; margin: 15px 0 6px; }
+.menu-item { border-bottom: 1px solid #eff2ee; color: #59675f; font-size: 10px; line-height: 1.45; padding: 6px 0; }
+.corporate-footer { align-items: center; border-top: 1px solid #e0e7df; color: #7b877e; display: flex; font-size: 10px; gap: 12px; justify-content: space-between; margin-top: 55px; padding: 18px 0 24px; }
+.corporate-footer img { background: white; border-radius: 5px; height: 31px; object-fit: contain; padding: 2px 5px; width: 74px; }
+[hidden] { display: none !important; }
+@media (max-width: 760px) {
+  .corporate-shell { padding: 0 20px; }
+  .corporate-header { height: 76px; }
+  .logo-link { height: 49px; padding: 4px 9px; }
+  .logo-link img { height: 38px; }
+  .header-right { gap: 13px; }
+  .location-tag { font-size: 9px; }
+  .back-link { font-size: 10px; }
+  .welcome-hero { align-items: flex-start; flex-direction: column; gap: 28px; min-height: 0; padding: 38px 24px 23px; }
+  .hero-photo { object-position: 43% center; }
+  .hero-shade { background: linear-gradient(180deg, rgba(9,43,27,.75), rgba(12,47,30,.5) 48%, rgba(12,47,30,.2)); }
+  .hero-copy { padding: 4px 0; }
+  h1 { font-size: clamp(38px, 10vw, 54px); margin: 14px 0; }
+  .weather-card { margin: 0; max-width: none; width: 100%; }
+  .dining-section { margin-top: 39px; }
+  .dining-card { grid-template-columns: 1fr; }
+  .dining-photo-wrap { min-height: 220px; }
+  .dining-content { padding: 23px; }
+  .weekly-menu { padding: 19px; }
+  .corporate-footer { align-items: flex-start; flex-wrap: wrap; margin-top: 39px; }
+  .corporate-footer img { order: 0; }
+  .corporate-footer span:nth-child(2) { flex: 1; padding-top: 9px; }
+  .corporate-footer span:last-child { flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
