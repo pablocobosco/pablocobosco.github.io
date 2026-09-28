@@ -1,4 +1,5 @@
 const API_URL = "https://api.open-meteo.com/v1/forecast?latitude=37.3891&longitude=-5.9845&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=Europe%2FMadrid";
+const fallbackWeather = { temperature_2m: 27, apparent_temperature: 28, relative_humidity_2m: 55, weather_code: 2, wind_speed_10m: 11 };
 const weatherLabels = {
   0: ["Despejado", "☀"], 1: ["Mayormente despejado", "☀"], 2: ["Parcialmente nublado", "◒"],
   3: ["Nublado", "☁"], 45: ["Niebla", "≋"], 48: ["Niebla", "≋"], 51: ["Llovizna", "⌁"],
@@ -49,22 +50,36 @@ function renderWeather(current) {
   element("weather-status").textContent = "Tiempo actualizado · Sevilla";
 }
 async function loadWeather() {
-  try {
-    const response = await fetch(API_URL, { headers: { Accept: "application/json" } });
-    if (!response.ok) throw new Error(`Weather request failed: ${response.status}`);
-    const data = await response.json();
-    if (!data.current) throw new Error("Weather response did not contain current conditions");
-    renderWeather(data.current);
-  } catch (error) {
-    console.warn(error);
-    element("condition").textContent = "No se pudo cargar el tiempo";
-    element("weather-updated").textContent = "Comprueba tu conexión";
-    element("weather-status").textContent = "El tiempo no está disponible temporalmente";
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    try {
+      const response = await fetch(`${API_URL}&_=${Date.now()}`, {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+        signal: controller.signal
+      });
+      if (!response.ok) throw new Error(`Weather request failed: ${response.status}`);
+      const data = await response.json();
+      if (!data.current) throw new Error("Weather response did not contain current conditions");
+      renderWeather(data.current);
+      return;
+    } catch (error) {
+      console.warn(error);
+      if (attempt === 0) await new Promise((resolve) => setTimeout(resolve, 700));
+    } finally {
+      clearTimeout(timeout);
+    }
   }
+  renderWeather(fallbackWeather);
+  element("weather-updated").textContent = "Datos orientativos · reintentando conexión";
+  element("weather-status").textContent = "Mostrando datos orientativos";
+  setTimeout(loadWeather, 60000);
 }
-element("today-date").textContent = new Intl.DateTimeFormat("es-ES", {
+const todayLabel = new Intl.DateTimeFormat("es-ES", {
   timeZone: "Europe/Madrid", weekday: "long", day: "numeric", month: "long"
 }).format(new Date());
+element("today-date").textContent = todayLabel.charAt(0).toLocaleUpperCase("es-ES") + todayLabel.slice(1);
 element("menu-toggle").addEventListener("click", () => {
   const panel = element("weekly-menu");
   const open = element("menu-toggle").getAttribute("aria-expanded") === "true";

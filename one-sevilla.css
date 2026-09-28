@@ -21,9 +21,8 @@ button { cursor: pointer; }
 .logo-link img { display: block; height: 45px; width: auto; }
 .header-right { align-items: center; display: flex; gap: 26px; }
 .location-tag { align-items: center; color: #57695e; display: flex; font-size: 10px; font-weight: 700; gap: 9px; letter-spacing: .15em; }
-.status-dot { background: #40a66b; border-radius: 50%; box-shadow: 0 0 0 4px #e0efe4; height: 7px; width: 7px; }
-.back-link { color: var(--deep-green); font-size: 12px; font-weight: 600; text-decoration: none; }
-.back-link span { font-size: 15px; margin-left: 6px; }
+.status-dot { animation: status-pulse 1.8s ease-in-out infinite; background: #40a66b; border-radius: 50%; box-shadow: 0 0 0 4px #e0efe4; height: 8px; width: 8px; }
+@keyframes status-pulse { 50% { box-shadow: 0 0 0 7px rgba(64,166,107,.12); opacity: .45; } }
 .welcome-hero { align-items: center; border-radius: 20px; display: flex; min-height: 435px; overflow: hidden; padding: 52px 6.5%; position: relative; }
 .hero-photo, .hero-shade { height: 100%; inset: 0; position: absolute; width: 100%; }
 .hero-photo { object-fit: cover; object-position: center 54%; }
@@ -34,7 +33,7 @@ button { cursor: pointer; }
 h1, h2, h3, p { margin-top: 0; }
 h1 { font-family: "Manrope", sans-serif; font-size: clamp(40px, 5.4vw, 68px); letter-spacing: -.065em; line-height: 1.04; margin: 20px 0 18px; }
 h1 span { color: #d3e86b; }
-.hero-date { color: rgba(255,255,255,.84); font-size: 13px; margin: 0; text-transform: capitalize; }
+.hero-date { color: rgba(255,255,255,.92); font-size: clamp(17px, 2vw, 21px); font-weight: 500; margin: 0; }
 .weather-card { backdrop-filter: blur(16px); background: rgba(255,255,255,.94); border: 1px solid rgba(255,255,255,.58); border-radius: 17px; margin-left: auto; max-width: 278px; padding: 22px 23px 17px; position: relative; width: 34%; z-index: 1; box-shadow: 0 16px 44px rgba(5,33,18,.18); }
 .weather-card-top { align-items: center; display: flex; justify-content: space-between; }
 .card-overline { color: var(--green); font-size: 9px; }
