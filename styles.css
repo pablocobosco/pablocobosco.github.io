@@ -24,6 +24,8 @@ button { cursor: pointer; }
 .brand strong { font-weight: 400; color: var(--muted); }
 .brand-mark { display: grid; place-items: center; width: 31px; height: 31px; border-radius: 50%; background: var(--ink); color: var(--yellow); font-size: 22px; line-height: 1; }
 .topbar-actions { gap: 18px; }
+.corporate-link { border: 1px solid var(--line); border-radius: 20px; color: var(--teal-dark); font-size: 11px; font-weight: 600; padding: 8px 12px; text-decoration: none; }
+.corporate-link:hover { background: #e9f4f1; }
 .updated, .muted-label { color: var(--muted); font-size: 12px; margin: 0; }
 .icon-button { border: 1px solid var(--line); border-radius: 50%; width: 35px; height: 35px; color: var(--teal-dark); background: white; font-size: 22px; line-height: 1; transition: transform .2s, background .2s; }
 .icon-button:hover { background: #e9f4f1; transform: rotate(45deg); }
