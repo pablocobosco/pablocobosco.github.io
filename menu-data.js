@@ -1,4 +1,5 @@
 window.oneSevillaMenuRange = "28 septiembre–4 octubre";
+window.oneSevillaWeekOrder = [1, 2, 3, 4, 5, 6, 0];
 window.oneSevillaWeeklyMenu = {
   1: { day: "Lunes 28", lunch: ["Fabada asturiana", "Picadillo de atún", "Salchichas frescas a la plancha", "Salmón en salsa Thai", "Puré de patatas", "Calabacín con reducción de soja", "Fruta fresca y lácteo"], dinner: ["Patatas cheese bacon", "Ensalada César", "Croquetas de cocido", "Merluza a la plancha", "Coditos salteados", "Coliflor en tempura", "Fruta fresca y lácteo"] },
   2: { day: "Martes 29", lunch: ["Arroz con tomate", "Garbanzos al curry", "Chuleta a la plancha", "Bonito encebollado", "Patatas a lo pobre", "Zanahoria al vapor con cebolla", "Fruta fresca y lácteo"], dinner: ["Macarrones gratinados con atún", "Sopa de ave con fideos", "Jamoncitos de pollo en salsa barbacoa", "Tortilla de jamón york", "Berenjenas con miel", "Pimientos verdes a la plancha", "Fruta fresca y lácteo"] },
