@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TUSSAM en vivo</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://tile.openstreetmap.org">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+    :root{--ink:#17231f;--muted:#78847f;--line:#e8eeea;--green:#087c58;--mint:#e6f4ed;--paper:#f7f9f6}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif}
+    .shell{min-height:100vh;display:grid;grid-template-columns:360px 1fr}
+    .sidebar{padding:30px 26px;background:#fff;border-right:1px solid var(--line);z-index:500;display:flex;flex-direction:column}
+    .brand{display:flex;align-items:center;gap:11px;font:800 18px Manrope,sans-serif}
+    .logo{width:39px;height:39px;border-radius:13px;background:var(--green);display:grid;place-items:center;color:#fff;font-size:23px}
+    .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);font-weight:700;margin:57px 0 0}
+    h1{font:800 31px/1.14 Manrope,sans-serif;letter-spacing:-1.1px;margin:10px 0 9px}
+    .intro{font-size:14px;line-height:1.55;color:var(--muted);margin:0 0 28px}
+    .label{font-size:12px;font-weight:700;margin-bottom:9px;display:block}
+    .search{display:flex;gap:8px}
+    .search input{flex:1;min-width:0;border:1px solid #dce5df;border-radius:12px;padding:13px 14px;font:600 15px 'DM Sans';outline:none}
+    .search input:focus{border-color:var(--green);box-shadow:0 0 0 3px #087c5818}
+    .search button{border:0;background:var(--green);color:#fff;border-radius:12px;padding:0 17px;font-weight:700;font-size:14px;cursor:pointer}
+    .suggestions{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0 25px}
+    .chip{border:1px solid var(--line);background:#fff;padding:6px 10px;border-radius:20px;color:#46534d;font-size:12px;font-weight:600;cursor:pointer}
+    .chip:hover{background:var(--mint)}
+    .card{border:1px solid var(--line);border-radius:15px;padding:16px;margin:2px 0 16px}
+    .cardhead{display:flex;align-items:center;justify-content:space-between}
+    .cardtitle{font-weight:700;font-size:14px}
+    .live{color:var(--green);background:var(--mint);border-radius:20px;font-size:10px;font-weight:800;padding:5px 8px;letter-spacing:.4px}
+    .stats{display:flex;align-items:baseline;gap:7px;margin-top:12px}
+    .stats strong{font:800 29px Manrope}
+    .stats span,.sub{font-size:12px;color:var(--muted)}
+    .status{font-size:13px;line-height:1.5;color:#52615a;padding:13px 14px;background:#f5f8f5;border-radius:11px;margin-top:5px}
+    .status.error{background:#fff1ed;color:#a1432c}
+    .status.ok{background:var(--mint);color:#176448}
+    .refresh{display:flex;align-items:center;justify-content:space-between;padding:12px 2px;color:var(--muted);font-size:12px}
+    .toggle{display:flex;align-items:center;gap:7px}
+    .toggle input{accent-color:var(--green)}
+    .foot{margin-top:auto;padding-top:22px;border-top:1px solid var(--line);font-size:11px;line-height:1.55;color:#8a948e}
+    .mapwrap{position:relative;min-height:100vh}
+    .maptop{position:absolute;z-index:500;top:22px;left:22px;right:22px;display:flex;justify-content:space-between;pointer-events:none}
+    .pill{pointer-events:auto;background:#ffffffed;box-shadow:0 4px 18px #23342a12;border:1px solid #e5ebe6;border-radius:12px;padding:10px 14px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:9px}
+    .loc{width:8px;height:8px;border-radius:50%;background:#38a978}
+    .mapkey{gap:10px;color:#52615a;font-weight:500}
+    .keyline{width:20px;height:3px;background:#0a8d61;border-radius:5px}
+    .keybus{background:var(--green);color:#fff;border-radius:50%;width:20px;height:20px;display:grid;place-items:center}
+    .map{height:100vh;width:100%;background:#e9eee9}
+    .bus-marker{background:var(--green);border:2px solid #fff;box-shadow:0 2px 8px #143a2c50;border-radius:50%;width:34px;height:34px;display:grid;place-items:center;color:#fff;font-size:18px}
+    .leaflet-popup-content-wrapper{border-radius:12px}
+    .blank{position:absolute;z-index:400;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:18px;padding:22px 25px;box-shadow:0 8px 32px #20362a18;text-align:center;max-width:310px;width:calc(100% - 34px)}
+    .blank strong{display:block;font:700 16px Manrope;margin:8px 0 4px}
+    .blank span{font-size:13px;color:var(--muted);line-height:1.5}
+    .blank.hidden{display:none}
+    @media(max-width:780px){.shell{display:flex;flex-direction:column}.sidebar{padding:18px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:16px}.logo{width:34px;height:34px}.eyebrow{margin-top:24px}h1{font-size:26px;margin:7px 0}.intro{font-size:13px;margin-bottom:16px}.suggestions{margin:9px 0 13px}.card{margin:0 0 10px;padding:12px 14px}.stats{margin-top:8px}.stats strong{font-size:23px}.status{padding:10px 12px}.refresh{padding:7px 2px}.foot{display:none}.mapwrap{min-height:420px;flex:1}.map{height:calc(100vh - 405px);min-height:420px}.maptop{top:12px;left:12px;right:12px}.pill{padding:8px 10px;font-size:11px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo" aria-hidden="true">🚌</div>Sevilla en ruta</div>
+      <p class="eyebrow">Transporte en tiempo real</p>
+      <h1>Tu línea,<br>en el mapa.</h1>
+      <p class="intro">Consulta el recorrido y sigue los autobuses de TUSSAM en directo.</p>
+      <label class="label" for="line">¿Qué línea quieres consultar?</label>
+      <form class="search" id="form">
+        <input id="line" placeholder="Ej. 3, 27, C1…" autocomplete="off" aria-label="Línea de TUSSAM">
+        <button type="submit">Ver línea →</button>
+      </form>
+      <div class="suggestions">
+        <button class="chip" type="button" data-line="03">3</button>
+        <button class="chip" type="button" data-line="C1">C1</button>
+        <button class="chip" type="button" data-line="C2">C2</button>
+        <button class="chip" type="button" data-line="27">27</button>
+        <button class="chip" type="button" data-line="32">32</button>
+      </div>
+      <div class="card">
+        <div class="cardhead"><span class="cardtitle" id="routeName">Explora Sevilla</span><span class="live">EN VIVO</span></div>
+        <div class="stats"><strong id="count">—</strong><span>autobuses en circulación</span></div>
+        <div class="sub" id="updated">Elige una línea para empezar</div>
+      </div>
+      <div id="status" class="status">Escribe una línea o elige una sugerencia para ver el recorrido y los autobuses en directo.</div>
+      <div class="refresh">
+        <label class="toggle"><input id="autorefresh" type="checkbox" checked> Actualizar cada minuto</label>
+        <span id="timer"></span>
+      </div>
+      <div class="foot">Datos de vehículos y recorridos: TUSSAM<br>Mapa: © OpenStreetMap · Refresco cada 60 segundos</div>
+    </aside>
+    <main class="mapwrap">
+      <div class="maptop">
+        <div class="pill"><i class="loc"></i><span id="maplabel">Sevilla, España</span></div>
+        <div class="pill mapkey"><span class="keybus">🚌</span> Autobuses <i class="keyline"></i> Recorrido</div>
+      </div>
+      <div id="map" class="map"></div>
+      <div class="blank" id="blank"><div style="font-size:29px">🚌</div><strong>Sevilla te espera</strong><span>Selecciona una línea para ver su recorrido y los autobuses activos.</span></div>
+    </main>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const map = L.map("map", { zoomControl: false }).setView([37.3891, -5.9845], 12);
+    L.control.zoom({ position: "bottomright" }).addTo(map);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19
+    }).addTo(map);
+
+    const lineLayer = L.layerGroup().addTo(map);
+    const busLayer = L.layerGroup().addTo(map);
+    const $ = id => document.getElementById(id);
+    let activeLine = "";
+    let refreshHandle;
+    let searchToken = 0;
+
+    function setStatus(message, type = "") {
+      $("status").textContent = message;
+      $("status").className = "status " + type;
+    }
+
+    function lineCode(line) {
+      return /^\d$/.test(line) ? "0" + line : line;
+    }
+
+    function gasCall(method, line) {
+      return new Promise((resolve, reject) => {
+        const runner = google.script.run
+          .withSuccessHandler(resolve)
+          .withFailureHandler(error => reject(new Error(error.message || String(error))));
+        runner[method](line);
+      });
+    }
+
+    function addBuses(buses, line) {
+      busLayer.clearLayers();
+      const bounds = [];
+      const icon = L.divIcon({
+        className: "",
+        html: '<div class="bus-marker">🚌</div>',
+        iconSize: [34, 34],
+        iconAnchor: [17, 17],
+        popupAnchor: [0, -16]
+      });
+
+      for (const bus of buses) {
+        const lat = Number(bus.latitudE6) / 1_000_000;
+        const lng = Number(bus.longitudE6) / 1_000_000;
+        if (!Number.isFinite(lat) || !Number.isFinite(lng) ||
+            Math.abs(lat) > 90 || Math.abs(lng) > 180) continue;
+
+        const marker = L.marker([lat, lng], { icon });
+        const popup = document.createElement("div");
+        popup.className = "popup";
+        const title = document.createElement("strong");
+        title.textContent = "Línea " + line;
+        const details = document.createElement("div");
+        details.textContent = "Vehículo " + bus.vehiculo + (bus.sentido ? " · Sentido " + bus.sentido : "");
+        popup.append(title, details);
+        marker.bindPopup(popup).addTo(busLayer);
+        bounds.push([lat, lng]);
+      }
+      return bounds;
+    }
+
+    async function search(raw) {
+      const line = raw.trim().toUpperCase();
+      if (!line) return;
+      if (!/^[A-Z0-9]{1,4}$/.test(line)) {
+        setStatus("Introduce un código válido, por ejemplo 3, 27 o C1.", "error");
+        return;
+      }
+
+      const token = ++searchToken;
+      activeLine = line;
+      $("line").value = line;
+      $("routeName").textContent = "Línea " + line;
+      $("maplabel").textContent = "Línea " + line + " · Sevilla";
+      $("blank").classList.add("hidden");
+      $("count").textContent = "…";
+      $("updated").textContent = "Consultando TUSSAM…";
+      setStatus("Cargando recorrido y posiciones de autobuses…");
+      clearInterval(refreshHandle);
+      lineLayer.clearLayers();
+      busLayer.clearLayers();
+
+      try {
+        const results = await Promise.all([gasCall("getRoute", lineCode(line)), gasCall("getBuses", lineCode(line))]);
+        if (token !== searchToken) return;
+        const [route, busData] = results;
+        if (route.features.length) {
+          L.geoJSON(route, {
+            style: feature => ({
+              color: feature.properties?.Color || "#087c58",
+              weight: 5,
+              opacity: 0.82,
+              lineCap: "round",
+              lineJoin: "round"
+            })
+          }).addTo(lineLayer);
+        }
+
+        const bounds = addBuses(busData.result, line);
+        const routeLayers = lineLayer.getLayers();
+        const routeBounds = routeLayers.length ? L.featureGroup(routeLayers).getBounds() : null;
+        const allBounds = bounds.length ? L.latLngBounds(bounds) : null;
+        if (routeBounds?.isValid()) {
+          if (allBounds) allBounds.extend(routeBounds);
+          else map.fitBounds(routeBounds, { padding: [50, 50], maxZoom: 15 });
+        }
+        if (allBounds?.isValid()) map.fitBounds(allBounds, { padding: [50, 50], maxZoom: 15 });
+
+        $("count").textContent = String(bounds.length);
+        $("updated").textContent = "Actualizado a las " + new Date().toLocaleTimeString("es-ES");
+        setStatus(
+          bounds.length
+            ? `Mostrando ${bounds.length} autobús${bounds.length === 1 ? "" : "es"} y el recorrido de la línea ${line}.`
+            : `Recorrido cargado; ahora no hay autobuses visibles en la línea ${line}.`,
+          "ok"
+        );
+        if ($("autorefresh").checked) {
+          refreshHandle = setInterval(() => refreshBuses(line, token), 60_000);
+        }
+      } catch (error) {
+        if (token !== searchToken) return;
+        $("count").textContent = "—";
+        $("updated").textContent = "No se pudieron cargar los datos";
+        setStatus(error.message || "No se pudo conectar con TUSSAM.", "error");
+      }
+    }
+
+    async function refreshBuses(line, token = searchToken) {
+      try {
+        const busData = await gasCall("getBuses", lineCode(line));
+        if (token !== searchToken) return;
+        const bounds = addBuses(busData.result, line);
+        $("count").textContent = String(bounds.length);
+        $("updated").textContent = "Actualizado a las " + new Date().toLocaleTimeString("es-ES");
+        if (bounds.length) map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+        setStatus(`Autobuses de la línea ${line} actualizados.`, "ok");
+      } catch (error) {
+        if (token === searchToken) setStatus(error.message || "No se pudieron actualizar los autobuses.", "error");
+      }
+    }
+
+    $("form").addEventListener("submit", event => {
+      event.preventDefault();
+      search($("line").value);
+    });
+    document.querySelectorAll(".chip").forEach(button => {
+      button.addEventListener("click", () => search(button.dataset.line));
+    });
+    $("autorefresh").addEventListener("change", () => {
+      clearInterval(refreshHandle);
+      if ($("autorefresh").checked && activeLine) {
+        refreshHandle = setInterval(() => refreshBuses(activeLine), 60_000);
+      }
+    });
+  </script>
+</body>
+</html>
