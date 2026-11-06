@@ -14,10 +14,19 @@ function getBuses(line) {
   return getCachedJson_("buses_" + code, function () {
     const response = UrlFetchApp.fetch(
       TUSSAM_API + encodeURIComponent(code) + "?_=" + Date.now(),
-      { headers: { Accept: "application/json" }, muteHttpExceptions: true }
+      {
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Accept-Language": "es-ES,es;q=0.9",
+          Origin: "https://reddelineas.tussam.es",
+          Referer: "https://reddelineas.tussam.es/",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36"
+        },
+        muteHttpExceptions: true
+      }
     );
     if (response.getResponseCode() !== 200) {
-      throw new Error("TUSSAM respondió HTTP " + response.getResponseCode());
+      throw new Error(describeHttpError_("TUSSAM", response));
     }
 
     const data = JSON.parse(response.getContentText());
@@ -59,6 +68,20 @@ function normalizeLine(line) {
     throw new Error("Código de línea no válido");
   }
   return /^\d$/.test(code) ? "0" + code : code;
+}
+
+function describeHttpError_(service, response) {
+  const status = response.getResponseCode();
+  const detail = response.getContentText()
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 240);
+  return service + " respondió HTTP " + status +
+    (detail ? ": " + detail : "") +
+    (status === 403 ? ". Google Apps Script realiza estas peticiones desde IPs compartidas de Google, que TUSSAM podría estar bloqueando." : "");
 }
 
 function getCachedJson_(key, load) {
